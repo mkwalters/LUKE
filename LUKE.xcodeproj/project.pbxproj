@@ -1,0 +1,603 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F7391369219255B800C93AFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391368219255B800C93AFD /* AppDelegate.swift */; };
+		F739136B219255B800C93AFD /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = F739136A219255B800C93AFD /* GameScene.sks */; };
+		F739136D219255B800C93AFD /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = F739136C219255B800C93AFD /* Actions.sks */; };
+		F739136F219255B800C93AFD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739136E219255B800C93AFD /* GameScene.swift */; };
+		F7391371219255B800C93AFD /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391370219255B800C93AFD /* GameViewController.swift */; };
+		F7391374219255B800C93AFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7391372219255B800C93AFD /* Main.storyboard */; };
+		F7391376219255B900C93AFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7391375219255B900C93AFD /* Assets.xcassets */; };
+		F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7391377219255B900C93AFD /* LaunchScreen.storyboard */; };
+		F7391384219255B900C93AFD /* LUKETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391383219255B900C93AFD /* LUKETests.swift */; };
+		F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739138E219255B900C93AFD /* LUKEUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F7391380219255B900C93AFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F739135D219255B800C93AFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7391364219255B800C93AFD;
+			remoteInfo = LUKE;
+		};
+		F739138B219255B900C93AFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F739135D219255B800C93AFD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7391364219255B800C93AFD;
+			remoteInfo = LUKE;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F7391365219255B800C93AFD /* LUKE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LUKE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7391368219255B800C93AFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F739136A219255B800C93AFD /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		F739136C219255B800C93AFD /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		F739136E219255B800C93AFD /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		F7391370219255B800C93AFD /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		F7391373219255B800C93AFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F7391375219255B900C93AFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F7391378219255B900C93AFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F739137A219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F739137F219255B900C93AFD /* LUKETests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LUKETests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7391383219255B900C93AFD /* LUKETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUKETests.swift; sourceTree = "<group>"; };
+		F7391385219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F739138A219255B900C93AFD /* LUKEUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LUKEUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F739138E219255B900C93AFD /* LUKEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUKEUITests.swift; sourceTree = "<group>"; };
+		F7391390219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F7391362219255B800C93AFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F739137C219255B900C93AFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7391387219255B900C93AFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F739135C219255B800C93AFD = {
+			isa = PBXGroup;
+			children = (
+				F7391367219255B800C93AFD /* LUKE */,
+				F7391382219255B900C93AFD /* LUKETests */,
+				F739138D219255B900C93AFD /* LUKEUITests */,
+				F7391366219255B800C93AFD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F7391366219255B800C93AFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7391365219255B800C93AFD /* LUKE.app */,
+				F739137F219255B900C93AFD /* LUKETests.xctest */,
+				F739138A219255B900C93AFD /* LUKEUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F7391367219255B800C93AFD /* LUKE */ = {
+			isa = PBXGroup;
+			children = (
+				F7391368219255B800C93AFD /* AppDelegate.swift */,
+				F739136A219255B800C93AFD /* GameScene.sks */,
+				F739136C219255B800C93AFD /* Actions.sks */,
+				F739136E219255B800C93AFD /* GameScene.swift */,
+				F7391370219255B800C93AFD /* GameViewController.swift */,
+				F7391372219255B800C93AFD /* Main.storyboard */,
+				F7391375219255B900C93AFD /* Assets.xcassets */,
+				F7391377219255B900C93AFD /* LaunchScreen.storyboard */,
+				F739137A219255B900C93AFD /* Info.plist */,
+			);
+			path = LUKE;
+			sourceTree = "<group>";
+		};
+		F7391382219255B900C93AFD /* LUKETests */ = {
+			isa = PBXGroup;
+			children = (
+				F7391383219255B900C93AFD /* LUKETests.swift */,
+				F7391385219255B900C93AFD /* Info.plist */,
+			);
+			path = LUKETests;
+			sourceTree = "<group>";
+		};
+		F739138D219255B900C93AFD /* LUKEUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F739138E219255B900C93AFD /* LUKEUITests.swift */,
+				F7391390219255B900C93AFD /* Info.plist */,
+			);
+			path = LUKEUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F7391364219255B800C93AFD /* LUKE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7391393219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKE" */;
+			buildPhases = (
+				F7391361219255B800C93AFD /* Sources */,
+				F7391362219255B800C93AFD /* Frameworks */,
+				F7391363219255B800C93AFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LUKE;
+			productName = LUKE;
+			productReference = F7391365219255B800C93AFD /* LUKE.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F739137E219255B900C93AFD /* LUKETests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7391396219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKETests" */;
+			buildPhases = (
+				F739137B219255B900C93AFD /* Sources */,
+				F739137C219255B900C93AFD /* Frameworks */,
+				F739137D219255B900C93AFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7391381219255B900C93AFD /* PBXTargetDependency */,
+			);
+			name = LUKETests;
+			productName = LUKETests;
+			productReference = F739137F219255B900C93AFD /* LUKETests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F7391389219255B900C93AFD /* LUKEUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7391399219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKEUITests" */;
+			buildPhases = (
+				F7391386219255B900C93AFD /* Sources */,
+				F7391387219255B900C93AFD /* Frameworks */,
+				F7391388219255B900C93AFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F739138C219255B900C93AFD /* PBXTargetDependency */,
+			);
+			name = LUKEUITests;
+			productName = LUKEUITests;
+			productReference = F739138A219255B900C93AFD /* LUKEUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F739135D219255B800C93AFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Mitchell Walters";
+				TargetAttributes = {
+					F7391364219255B800C93AFD = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					F739137E219255B900C93AFD = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = F7391364219255B800C93AFD;
+					};
+					F7391389219255B900C93AFD = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = F7391364219255B800C93AFD;
+					};
+				};
+			};
+			buildConfigurationList = F7391360219255B800C93AFD /* Build configuration list for PBXProject "LUKE" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F739135C219255B800C93AFD;
+			productRefGroup = F7391366219255B800C93AFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F7391364219255B800C93AFD /* LUKE */,
+				F739137E219255B900C93AFD /* LUKETests */,
+				F7391389219255B900C93AFD /* LUKEUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F7391363219255B800C93AFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7391374219255B800C93AFD /* Main.storyboard in Resources */,
+				F739136B219255B800C93AFD /* GameScene.sks in Resources */,
+				F7391376219255B900C93AFD /* Assets.xcassets in Resources */,
+				F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */,
+				F739136D219255B800C93AFD /* Actions.sks in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F739137D219255B900C93AFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7391388219255B900C93AFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F7391361219255B800C93AFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F739136F219255B800C93AFD /* GameScene.swift in Sources */,
+				F7391371219255B800C93AFD /* GameViewController.swift in Sources */,
+				F7391369219255B800C93AFD /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F739137B219255B900C93AFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7391384219255B900C93AFD /* LUKETests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7391386219255B900C93AFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7391381219255B900C93AFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7391364219255B800C93AFD /* LUKE */;
+			targetProxy = F7391380219255B900C93AFD /* PBXContainerItemProxy */;
+		};
+		F739138C219255B900C93AFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7391364219255B800C93AFD /* LUKE */;
+			targetProxy = F739138B219255B900C93AFD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		F7391372219255B800C93AFD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7391373219255B800C93AFD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F7391377219255B900C93AFD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F7391378219255B900C93AFD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F7391391219255B900C93AFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F7391392219255B900C93AFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F7391394219255B900C93AFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKE/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F7391395219255B900C93AFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKE/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F7391397219255B900C93AFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKETests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKETests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LUKE.app/LUKE";
+			};
+			name = Debug;
+		};
+		F7391398219255B900C93AFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKETests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKETests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LUKE.app/LUKE";
+			};
+			name = Release;
+		};
+		F739139A219255B900C93AFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKEUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKEUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LUKE;
+			};
+			name = Debug;
+		};
+		F739139B219255B900C93AFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7QH98TGAP8;
+				INFOPLIST_FILE = LUKEUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "vw-krv.LUKEUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LUKE;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F7391360219255B800C93AFD /* Build configuration list for PBXProject "LUKE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7391391219255B900C93AFD /* Debug */,
+				F7391392219255B900C93AFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7391393219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7391394219255B900C93AFD /* Debug */,
+				F7391395219255B900C93AFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7391396219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKETests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7391397219255B900C93AFD /* Debug */,
+				F7391398219255B900C93AFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7391399219255B900C93AFD /* Build configuration list for PBXNativeTarget "LUKEUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F739139A219255B900C93AFD /* Debug */,
+				F739139B219255B900C93AFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F739135D219255B800C93AFD /* Project object */;
+}
