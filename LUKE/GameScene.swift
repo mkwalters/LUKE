@@ -57,6 +57,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score = 0
     var score_label = SKLabelNode()
     
+    let n_forces = 15
+    var forces = [Double]()
+    
     override func didMove(to view: SKView) {
         
         create_scene()
@@ -74,7 +77,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func create_scene() {
         self.physicsWorld.contactDelegate = self
-        
+        forces = []
+        for _ in 1...n_forces {
+            forces.append(0.0)
+        }
         backgroundColor = purple
         game_has_started = false
         game_ended = false
@@ -124,6 +130,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block.physicsBody?.collisionBitMask = 0
         block.physicsBody?.contactTestBitMask = physicsCategory.obstacle
         block.physicsBody?.isDynamic = true
+        block.physicsBody?.friction = 0
         
         block.physicsBody?.affectedByGravity = false
         addChild(block)
@@ -294,13 +301,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
         
         for touch in touches {
             if game_ended == false {
-                block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width))/touch.maximumPossibleForce ) - CGFloat((2 * block_radius))
+                
+                print("updating")
+                forces.remove(at: 0)
+                forces.append(Double(touch.force))
+                
+                
+                var average_force = 0.0
+                for force in forces {
+                    average_force += force
+                }
+                average_force = average_force / Double(n_forces)
+                
+                if touch.force == touch.maximumPossibleForce {
+                    average_force = Double(touch.maximumPossibleForce)
+                }
+                
+                //block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width))/touch.maximumPossibleForce ) - CGFloat((2 * block_radius))
+                block.position.x = starting_block_position.x + ( ((CGFloat(average_force)) * (self.frame.width))/touch.maximumPossibleForce ) - CGFloat((2 * block_radius))
+
             }
         }
+        
+        
         
     }
     
@@ -326,11 +356,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func didBegin(_ contact: SKPhysicsContact) {
-        //print("touching")
-        //CANT CONTROL WHICH OBJECT IS A AND WHICH IS B
-        // NEED TO CHECK BOTH
+        print("touching")
+
         if contact.bodyA.node?.name == "obstacle" || contact.bodyB.node?.name == "obstacle" {
-            
+
             if game_has_started == false {
                 game_has_started = true
                 for obstacle in obstacles {
@@ -339,10 +368,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     print("game started")
                     first_instructions.removeFromParent()
                     second_instructions.removeFromParent()
-                    
+
                 }
             }
-        
+
         }
         
     }
@@ -350,6 +379,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        
+        
         
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
             score_label.isPaused = true
