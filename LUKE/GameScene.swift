@@ -57,7 +57,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score = 0
     var score_label = SKLabelNode()
     
-    let n_forces = 15
+    let n_forces = 10
     var forces = [Double]()
     
     override func didMove(to view: SKView) {
@@ -87,7 +87,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacles = []
         block_radius = Double(self.frame.width / 10)
         line_segment_colors = [yellow, light_blue, mustard_yellow]
-        score = 100000
+        score = 0
         
         first_instructions = SKLabelNode(text: "Press harder to move right")
         first_instructions.position = CGPoint(x: 0, y: 50)
@@ -174,6 +174,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             projected_path.strokeColor = line_segment_colors.randomElement() ?? yellow
             
             projected_path.lineWidth = 2
+            //projected_path.glowWidth = 2
             
             projected_path.name = "projected_path"
             
@@ -204,13 +205,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
     }
-    
+//    var realPaused = false
+//    {
+//        didSet
+//        {
+//            isPaused = realPaused
+//        }
+//    }
+//    override var isPaused : Bool
+//        {
+//        get
+//        {
+//            return realPaused
+//        }
+//        set
+//        {
+//            //we do not want to use newValue because it is being set without our knowledge
+//            for obstacle in obstacles {
+//                obstacle.isPaused = !realPaused
+//            }
+//        }
+//    }
     
     func make_obstacle() {
         
         //THIS WILL BREAK IF OBSTACLES ARRAY IS NILL
-        //OBSRACLES GETS ONE ELEMENT FROM CREATE_SCENE
-        
+        //OBSRACLES GETS ONE ELEMENT FROM CREATE_SCENEz
         
         let projected_path = SKShapeNode()
         
@@ -248,11 +268,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         line_path.move(to: starting_position)
         line_path.addLine(to: ending_position)
         
-        projected_path.lineWidth = 50
+
         projected_path.zPosition = 200
         projected_path.path = line_path
         projected_path.strokeColor = line_segment_colors.randomElement() ?? yellow
         projected_path.lineWidth = 2
+        //projected_path.glowWidth = 2
         
         projected_path.name = "projected_path"
         
@@ -275,8 +296,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         addChild(projected_path)
-
-        
         
         obstacles.append(projected_path)
         
@@ -303,8 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        
+    
         
         for touch in touches {
             if game_ended == false {
@@ -324,8 +342,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     average_force = Double(touch.maximumPossibleForce)
                 }
                 
-                //block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width))/touch.maximumPossibleForce ) - CGFloat((2 * block_radius))
-                block.position.x = starting_block_position.x + ( ((CGFloat(average_force)) * (self.frame.width))/touch.maximumPossibleForce ) - CGFloat((2 * block_radius))
+                block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width - CGFloat(2 * block_radius)))/touch.maximumPossibleForce ) 
+
 
             }
         }
@@ -380,11 +398,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         
-        
-        
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
             score_label.isPaused = true
             game_ended = true
+            
+            //UNCOMMENT THIS GUY FOR ADS TO BE PRESENT
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
             let restart_button = SKLabelNode(text: "RESTART")
             restart_button.position = CGPoint.zero
             restart_button.fontSize = 80
@@ -392,6 +411,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             restart_button.zPosition = 9999999
             restart_button.name = "restart"
             addChild(restart_button)
+            
+            let home_button = SKLabelNode(text: "Home")
+            home_button.position = CGPoint(x: 0, y: -200)
+            home_button.fontSize = 80
+            home_button.fontColor = UIColor.white
+            home_button.zPosition = 9999999
+            home_button.name = "home"
+            addChild(home_button)
+            
+            
             for obstacle in obstacles {
                 
                 obstacle.isPaused = true
@@ -400,5 +429,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
             }
         }
+        if game_has_started == false || game_ended == true {
+            score_label.isPaused = true
+            for obstacle in obstacles {
+                
+                obstacle.isPaused = true
+                
+                
+            }
+            
+        }
+        
     }
 }
