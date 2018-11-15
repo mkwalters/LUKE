@@ -23,23 +23,27 @@ class StartMenu: SKScene {
     
     var high_score = SKLabelNode(text: "0")
     
-    var play_button = SKSpriteNode(imageNamed: "play_button")
+    var play_button = SKSpriteNode(imageNamed: "play")
     
     var remove_ads = SKLabelNode(text: "Remove ads")
     
-    var title = SKLabelNode(text: "PUSHTAP")
+    var title = SKLabelNode(text: "LUKE")
     
     var rate = SKLabelNode(text: "RATE")
     
+    func get_high_score() -> Int {
+        return(UserDefaults.standard.integer(forKey: "high_score"))
+    }
+    
     override func didMove(to view: SKView) {
 
-        self.backgroundColor =  SKColor(red: CGFloat(0), green: CGFloat(0), blue: CGFloat(0), alpha: 1.0)
+        self.backgroundColor =  SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         //scene?.scaleMode = .aspectFill
         
         
-        high_score.position = CGPoint(x: 0, y: -200)
-        high_score.text = String(describing: 10)
+        high_score.position = CGPoint(x: 0, y: 0)
+        high_score.text = String(describing: get_high_score())
         high_score.fontColor = SKColor.blue
         high_score.fontSize = 80
         
@@ -51,12 +55,11 @@ class StartMenu: SKScene {
         rate.name = "rate"
         rate.fontSize = 80
         
-        addChild(rate)
+        //addChild(rate)
         
-        play_button.position = CGPoint(x: 0, y: 0)
+        play_button.position = CGPoint(x: 0, y: -200)
         play_button.name = "play"
-        
-        play_button.size = ICON_SIZE
+        play_button.setScale(3.0)
         addChild(play_button)
         
         title.position = CGPoint(x: 0, y: 325)
@@ -127,7 +130,7 @@ class StartMenu: SKScene {
                     if let scene = GameScene(fileNamed:"GameScene")
                     {
                         // Configure the view.
-                        let skView = self.view as! SKView
+                        let skView = self.view! as SKView
                         skView.showsFPS = true
                         skView.showsNodeCount = true
                         

@@ -22,11 +22,22 @@ struct physicsCategory {
     
 }
 
+//extension SKSpriteNode {
+//    
+//    func addGlow(radius: Float = 30) {
+//        let effectNode = SKEffectNode()
+//        effectNode.shouldRasterize = true
+//        addChild(effectNode)
+//        effectNode.addChild(SKSpriteNode(texture: texture))
+//        effectNode.filter = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputRadius":radius])
+//    }
+//}
+
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
-    var block_radius = 60.0
+    var block_radius = 0.0
     var block = SKShapeNode(circleOfRadius: CGFloat(0))
     var starting_block_position = CGPoint()
     let line = SKShapeNode()
@@ -56,6 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var game_has_started = false
     var score = 0
     var score_label = SKLabelNode()
+    var high_score_label = SKLabelNode()
     
     let n_forces = 10
     var forces = [Double]()
@@ -81,6 +93,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for _ in 1...n_forces {
             forces.append(0.0)
         }
+        
+        let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
+        
         backgroundColor = purple
         game_has_started = false
         game_ended = false
@@ -143,6 +158,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(score_label)
         
+        high_score_label = SKLabelNode(text: String(latest_high_score))
+        high_score_label.fontSize = 90
+        high_score_label.fontColor = UIColor.white
+        high_score_label.horizontalAlignmentMode = .left
+        high_score_label.position = CGPoint(x: -1 * self.frame.width / 2 + 5 , y: self.frame.height / 2 - high_score_label.frame.height - 5)
+        
+        addChild(high_score_label)
+        
         let update_score = SKAction.run {
             self.score += 1
             self.score_label.text = String(self.score)
@@ -150,9 +173,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let wait_for_score = SKAction.wait(forDuration: 0.5)
         
-        let increment_score = SKAction.sequence([update_score, wait_for_score ])
+        //NEEDS TO BE CHECKED
+        let update_high_score_if_necessary = SKAction.run {
+            if self.score > latest_high_score {
+                self.high_score_label.text = String(self.score)
+            }
+        }
+        
+        let increment_score = SKAction.sequence([update_score, update_high_score_if_necessary , wait_for_score ])
+        
+        
         
         let increment_score_forever = SKAction.repeatForever(increment_score)
+        
         
         score_label.run(increment_score_forever)
         score_label.isPaused = true
@@ -188,7 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             addChild(projected_path)
-            let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.5)
+            let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.35)
             
             let fall_forever = SKAction.repeatForever(fall)
             projected_path.run(fall_forever)
@@ -285,7 +318,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projected_path.physicsBody?.affectedByGravity = true
         projected_path.physicsBody?.pinned = true
         
-        let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.5)
+        let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.35)
         
         let fall_forever = SKAction.repeatForever(fall)
         
@@ -301,7 +334,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
     }
+    
+    func update_high_score(new_score: Double) {
+        
+        if score > UserDefaults.standard.integer(forKey: "high_score") {
+            UserDefaults.standard.set(new_score, forKey: "high_score")
+            //print(UserDefaults.standard.integer(forKey: "high_score"))
+        }
+    }
+    
+    func update_death_count() {
+        
+        var current_death_count = UserDefaults.standard.integer(forKey: "death_count")
+        current_death_count += 1
+        
+        UserDefaults.standard.set(current_death_count, forKey: "death_count")
+    
+    }
  
+    
     
     
     func touchDown(atPoint pos : CGPoint) {
@@ -327,7 +378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             if game_ended == false {
                 
-                print("updating")
+                //print("updating")
                 forces.remove(at: 0)
                 forces.append(Double(touch.force))
                 
@@ -352,6 +403,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func vibrateWithHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        
+        generator.impactOccurred()
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if game_ended == false {
             block.position = starting_block_position
@@ -365,6 +423,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if name == "restart" {
                     restart_scene()
                 }
+                if name == "home" {
+                    if let scene = StartMenu(fileNamed:"StartMenu")
+                    {
+                        // Configure the view.
+                        let skView = self.view! as SKView
+                        skView.showsFPS = true
+                        skView.showsNodeCount = true
+                        
+                        /* Sprite Kit applies additional optimizations to improve rendering performance */
+                        skView.ignoresSiblingOrder = true
+                        
+                        /* Set the scale mode to scale to fit the window */
+                        scene.scaleMode = .aspectFill
+                        
+                        skView.presentScene(scene)
+                    }
+                }
             }
         }
     }
@@ -374,7 +449,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func didBegin(_ contact: SKPhysicsContact) {
-        print("touching")
+        //print("touching")
 
         if contact.bodyA.node?.name == "obstacle" || contact.bodyB.node?.name == "obstacle" {
 
@@ -401,21 +476,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
             score_label.isPaused = true
             game_ended = true
+            update_high_score(new_score: Double(score))
+            update_death_count()
             
             //UNCOMMENT THIS GUY FOR ADS TO BE PRESENT
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
-            let restart_button = SKLabelNode(text: "RESTART")
-            restart_button.position = CGPoint.zero
-            restart_button.fontSize = 80
-            restart_button.fontColor = UIColor.white
+            let current_death_count = UserDefaults.standard.integer(forKey: "death_count")
+            let high_score = UserDefaults.standard.integer(forKey: "death_count")
+            var frequency = 0
+            if high_score > 100 {
+                frequency = 1
+            } else if high_score > 60 {
+                frequency = 2
+            } else if high_score > 30 {
+                frequency = 3
+            } else {
+                frequency = 5
+            }
+            
+            
+            if current_death_count > 10 && current_death_count % frequency == 0 {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
+            }
+            let restart_button = SKSpriteNode(imageNamed: "replay")
+            restart_button.position = CGPoint(x: 0, y: 100)
+            restart_button.setScale(3.0)
             restart_button.zPosition = 9999999
             restart_button.name = "restart"
             addChild(restart_button)
             
-            let home_button = SKLabelNode(text: "Home")
-            home_button.position = CGPoint(x: 0, y: -200)
-            home_button.fontSize = 80
-            home_button.fontColor = UIColor.white
+            let home_button = SKSpriteNode(imageNamed: "home")
+            home_button.position = CGPoint(x: 0, y: -100)
+            home_button.setScale(1.6)
             home_button.zPosition = 9999999
             home_button.name = "home"
             addChild(home_button)
@@ -428,6 +519,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 
             }
+            vibrateWithHaptic()
         }
         if game_has_started == false || game_ended == true {
             score_label.isPaused = true
