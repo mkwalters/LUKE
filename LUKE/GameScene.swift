@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 import CoreGraphics
-
+import StoreKit
 
 
 struct physicsCategory {
@@ -29,7 +29,7 @@ struct physicsCategory {
 //        effectNode.shouldRasterize = true
 //        addChild(effectNode)
 //        effectNode.addChild(SKSpriteNode(texture: texture))
-//        effectNode.filter = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputRadius":radius])
+//        effectNode.filter = CIFilter(name: "CIGaussianBlur", parameters: ["inputRadius":radius])
 //    }
 //}
 
@@ -106,6 +106,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         first_instructions = SKLabelNode(text: "Press harder to move right")
         first_instructions.position = CGPoint(x: 0, y: 50)
+        first_instructions.fontName = "Futura-MediumItalic"
         first_instructions.fontSize = 60
         first_instructions.fontColor = UIColor.white
         
@@ -114,6 +115,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         second_instructions = SKLabelNode(text: "Contact line to begin moving")
         second_instructions.position = CGPoint(x: 0, y: -50)
+        second_instructions.fontName = "Futura-MediumItalic"
         second_instructions.fontSize = 50
         second_instructions.fontColor = UIColor.white
         
@@ -151,6 +153,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(block)
         
         score_label = SKLabelNode(text: String(score))
+        score_label.fontName = "Futura-MediumItalic"
         score_label.fontSize = 90
         score_label.fontColor = UIColor.white
         score_label.horizontalAlignmentMode = .right
@@ -159,6 +162,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(score_label)
         
         high_score_label = SKLabelNode(text: String(latest_high_score))
+        high_score_label.fontName = "Futura-MediumItalic"
         high_score_label.fontSize = 90
         high_score_label.fontColor = UIColor.white
         high_score_label.horizontalAlignmentMode = .left
@@ -190,12 +194,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score_label.run(increment_score_forever)
         score_label.isPaused = true
         
-        for i in 1...6 {
+        
+        for i in stride(from: 60, through: 0, by: -1) {
         
             let projected_path = SKShapeNode()
             
             let starting_position = CGPoint(x: 0, y: CGFloat(i) * -1 * obstacle_length)
-            let ending_position = CGPoint.zero
+            let ending_position = CGPoint(x: 0, y: CGFloat(i + 1) * -1 * obstacle_length)
             
             let line_path:CGMutablePath = CGMutablePath()
             line_path.move(to: starting_position)
@@ -232,7 +237,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        for _ in 0...200 {
+        for _ in 0...100 {
             make_obstacle()
         }
         
@@ -403,6 +408,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     func vibrateWithHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.prepare()
@@ -458,7 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 for obstacle in obstacles {
                     obstacle.isPaused = false
                     score_label.isPaused = false
-                    print("game started")
+                    //print("game started")
                     first_instructions.removeFromParent()
                     second_instructions.removeFromParent()
 
@@ -469,7 +475,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    
+    func get_high_score() -> Int {
+        return(UserDefaults.standard.integer(forKey: "high_score"))
+    }
+    func get_death_count() -> Int {
+        return(UserDefaults.standard.integer(forKey: "death_count"))
+    }
     
     override func update(_ currentTime: TimeInterval) {
         
@@ -478,10 +489,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             game_ended = true
             update_high_score(new_score: Double(score))
             update_death_count()
+                    if get_high_score() > 100 && UserDefaults.standard.bool(forKey: "already flashed rate") == false && get_death_count() % 30 == 0 {
+                        SKStoreReviewController.requestReview()
+                        UserDefaults.standard.set(true, forKey: "already flashed rate")
+                    }
             
             //UNCOMMENT THIS GUY FOR ADS TO BE PRESENT
             let current_death_count = UserDefaults.standard.integer(forKey: "death_count")
-            let high_score = UserDefaults.standard.integer(forKey: "death_count")
+            let high_score = UserDefaults.standard.integer(forKey: "high_score")
             var frequency = 0
             if high_score > 100 {
                 frequency = 1
@@ -495,6 +510,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             
             if current_death_count > 10 && current_death_count % frequency == 0 {
+                
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
             }
             let restart_button = SKSpriteNode(imageNamed: "replay")
@@ -531,6 +547,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
-        
+        if (obstacles.first?.path?.boundingBox.minY)! < (-3 * self.frame.height) {
+            obstacles.first?.removeAllActions()
+            obstacles.first?.removeFromParent()
+            obstacles.removeFirst()
+            print("removed")
+        }
+        if (obstacles.last?.path?.boundingBox.maxY)! < (3 * self.frame.height) {
+            print("obstacle made. reporting from update")
+            make_obstacle()
+        }
     }
+    
 }

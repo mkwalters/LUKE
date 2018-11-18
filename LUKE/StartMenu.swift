@@ -9,6 +9,8 @@
 import Foundation
 import SpriteKit
 import SwiftyStoreKit
+import StoreKit
+import SwiftyStoreKit
 
 
 // this is probably where all constants should live. I think there are some sprinkled throughout the other classes
@@ -30,6 +32,8 @@ class StartMenu: SKScene {
     var title = SKLabelNode(text: "LUKE")
     
     var rate = SKLabelNode(text: "RATE")
+    let ads = SKLabelNode(text: "ADS")
+    
     
     func get_high_score() -> Int {
         return(UserDefaults.standard.integer(forKey: "high_score"))
@@ -37,12 +41,41 @@ class StartMenu: SKScene {
     
     override func didMove(to view: SKView) {
 
-        self.backgroundColor =  SKColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+        self.backgroundColor =  UIColor(displayP3Red: 39.0 / 255.0, green: 16.0 / 255.0, blue: 51.0 / 255.0, alpha: 1.0)
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         //scene?.scaleMode = .aspectFill
+//        if get_high_score() > 1 && UserDefaults.standard.bool(forKey: "already flashed rate") == false {
+//            SKStoreReviewController.requestReview()
+//            UserDefaults.standard.set(true, forKey: "already flashed rate")
+//        }
+        
+        ads.position = CGPoint(x: 0, y: -475)
+        ads.fontName = "PressStart2P"
+        ads.fontSize = 20
+        ads.name = "ads"
+        ads.zPosition = 4
+        
+        
+        addChild(ads)
+        
+        
+        
+//        red_circle_with_slash.position = CGPoint(x: 0, y: -460)
+//        red_circle_with_slash.scale(to: CGSize(width: 75, height: 75))
+//        red_circle_with_slash.zPosition = 5
+//
+//        addChild(red_circle_with_slash)
+        
+        
+        if let _ = UserDefaults.standard.value(forKey: "paid_version") {
+            
+            ads.removeFromParent()
+            //red_circle_with_slash.removeFromParent()
+        }
         
         
         high_score.position = CGPoint(x: 0, y: 0)
+        high_score.fontName = "Futura-MediumItalic"
         high_score.text = String(describing: get_high_score())
         high_score.fontColor = SKColor.blue
         high_score.fontSize = 80
@@ -64,6 +97,7 @@ class StartMenu: SKScene {
         
         title.position = CGPoint(x: 0, y: 325)
         title.fontColor = SKColor.purple
+        title.fontName = "Futura-MediumItalic"
         title.zPosition = 10000
         title.fontSize = 150
         
@@ -98,26 +132,27 @@ class StartMenu: SKScene {
 //        return(UserDefaults.standard.integer(forKey: "high_score"))
 //    }
 //
-//    func purchase_ad_removal() {
-//        SwiftyStoreKit.purchaseProduct("54321", quantity: 1, atomically: true) { result in
-//            switch result {
-//            case .success(let purchase):
-//                print("Purchase Success: \(purchase.productId)")
-//            case .error(let error):
-//                switch error.code {
-//                case .unknown: print("Unknown error. Please contact support")
-//                case .clientInvalid: print("Not allowed to make the payment")
-//                case .paymentCancelled: break
-//                case .paymentInvalid: print("The purchase identifier was invalid")
-//                case .paymentNotAllowed: print("The device is not allowed to make the payment")
-//                case .storeProductNotAvailable: print("The product is not available in the current storefront")
-//                case .cloudServicePermissionDenied: print("Access to cloud service information is not allowed")
-//                case .cloudServiceNetworkConnectionFailed: print("Could not connect to the network")
-//                case .cloudServiceRevoked: print("User has revoked permission to use this cloud service")
-//                }
-//            }
-//        }
-//    }
+    func purchase_ad_removal() {
+        SwiftyStoreKit.purchaseProduct("09876", quantity: 1, atomically: true) { result in
+            switch result {
+            case .success(let purchase):
+                print("Purchase Success: \(purchase.productId)")
+            case .error(let error):
+                switch error.code {
+                case .unknown: print("Unknown error. Please contact support")
+                case .clientInvalid: print("Not allowed to make the payment")
+                case .paymentCancelled: break
+                case .paymentInvalid: print("The purchase identifier was invalid")
+                case .paymentNotAllowed: print("The device is not allowed to make the payment")
+                case .storeProductNotAvailable: print("The product is not available in the current storefront")
+                case .cloudServicePermissionDenied: print("Access to cloud service information is not allowed")
+                case .cloudServiceNetworkConnectionFailed: print("Could not connect to the network")
+                case .cloudServiceRevoked: print("User has revoked permission to use this cloud service")
+                default: print((error as NSError).localizedDescription)
+                }
+            }
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -144,8 +179,8 @@ class StartMenu: SKScene {
                     }
                 }
                 
-                if name == "remove ads" {
-                    //purchase_ad_removal()
+                if name == "ads" {
+                    purchase_ad_removal()
                 }
                 
                 if name == "rate" {

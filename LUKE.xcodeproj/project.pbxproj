@@ -20,6 +20,7 @@
 		F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7391377219255B900C93AFD /* LaunchScreen.storyboard */; };
 		F7391384219255B900C93AFD /* LUKETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391383219255B900C93AFD /* LUKETests.swift */; };
 		F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739138E219255B900C93AFD /* LUKEUITests.swift */; };
+		F77AFCCE21A1E413000DA603 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77AFCCD21A1E413000DA603 /* StoreKit.framework */; };
 		F7E25140219CB51800C99F52 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E2513F219CB51800C99F52 /* StartMenu.swift */; };
 		F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7E25142219D06C400C99F52 /* StartMenu.sks */; };
 /* End PBXBuildFile section */
@@ -67,6 +68,7 @@
 		F739138A219255B900C93AFD /* LUKEUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LUKEUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F739138E219255B900C93AFD /* LUKEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUKEUITests.swift; sourceTree = "<group>"; };
 		F7391390219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F77AFCCD21A1E413000DA603 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F7E2513F219CB51800C99F52 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
 		F7E25142219D06C400C99F52 /* StartMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartMenu.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,6 +79,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE1289F0767EF66E3D4ACB7F /* Pods_LUKE.framework in Frameworks */,
+				F77AFCCE21A1E413000DA603 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +105,7 @@
 		01DB0B94490C35CD9B3D9372 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F77AFCCD21A1E413000DA603 /* StoreKit.framework */,
 				F6DC3D7E4941109AC03E52A5 /* Pods_LUKE.framework */,
 				2D196F9538CD903C264CC6E9 /* Pods_LUKETests.framework */,
 				26A7BE91C17F67B5B2FFE4F4 /* Pods_LUKEUITests.framework */,
@@ -252,6 +256,11 @@
 				TargetAttributes = {
 					F7391364219255B800C93AFD = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 					F739137E219255B900C93AFD = {
 						CreatedOnToolsVersion = 10.1;
