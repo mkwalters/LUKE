@@ -50,7 +50,7 @@ class StartMenu: SKScene {
 //        }
         
         ads.position = CGPoint(x: 0, y: -475)
-        ads.fontName = "PressStart2P"
+        // ads.fontName = "PressStart2P"
         ads.fontSize = 20
         ads.name = "ads"
         ads.zPosition = 4

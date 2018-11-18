@@ -22,17 +22,19 @@ struct physicsCategory {
     
 }
 
-//extension SKSpriteNode {
-//    
-//    func addGlow(radius: Float = 30) {
-//        let effectNode = SKEffectNode()
-//        effectNode.shouldRasterize = true
-//        addChild(effectNode)
-//        effectNode.addChild(SKSpriteNode(texture: texture))
-//        effectNode.filter = CIFilter(name: "CIGaussianBlur", parameters: ["inputRadius":radius])
-//    }
-//}
-
+extension SKNode
+{
+    func addGlow(radius:CGFloat=30)
+    {
+        let view = SKView()
+        let effectNode = SKEffectNode()
+        let texture = view.texture(from: self)
+        effectNode.shouldRasterize = true
+        effectNode.filter = CIFilter(name: "CIGaussianBlur",parameters: ["inputRadius":radius])
+        addChild(effectNode)
+        effectNode.addChild(SKSpriteNode(texture: texture))
+    }
+}
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -45,6 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var first_instructions = SKLabelNode()
     var second_instructions = SKLabelNode()
     
+    var end_joints = [SKShapeNode]()
     
     var obstacles = [SKShapeNode]()
     var game_ended = false
@@ -56,7 +59,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var last_obstacle_direction = "left"
     
     let purple = UIColor(displayP3Red: 39.0 / 255.0, green: 16.0 / 255.0, blue: 51.0 / 255.0, alpha: 1.0)
-    let orange = SKColor(red: 250.0 / 255.0, green: 131.0 / 255.0, blue: 52.0 / 255.0, alpha: 1.0)
+    let green = SKColor(red: 57.0 / 255.0, green: 255.0 / 255.0, blue: 52.0 / 255.0, alpha: 20.0)
     
     let yellow = SKColor(red: 255.0 / 255.0, green: 253.0 / 255.0, blue: 119.0 / 255.0, alpha: 1.0)
     let light_blue = SKColor(red: 56.0 / 255.0, green: 134.0 / 255.0, blue: 151.0 / 255.0, alpha: 1.0)
@@ -96,7 +99,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
         
-        backgroundColor = purple
+        backgroundColor = UIColor(displayP3Red: 39.0 / 255.0, green: 39.0 / 255.0, blue: 39.0 / 255.0, alpha: 1.0)
         game_has_started = false
         game_ended = false
         obstacles = []
@@ -107,7 +110,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         first_instructions = SKLabelNode(text: "Press harder to move right")
         first_instructions.position = CGPoint(x: 0, y: 50)
         first_instructions.fontName = "Futura-MediumItalic"
-        first_instructions.fontSize = 60
+        first_instructions.fontSize = 50
         first_instructions.fontColor = UIColor.white
         
         addChild(first_instructions)
@@ -127,10 +130,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         starting_block_position = CGPoint(x: -1 * self.frame.width / 2 + CGFloat(block_radius), y: -1 * self.frame.height / 2 + CGFloat(block_radius))
         block = SKShapeNode(circleOfRadius: CGFloat(block_radius))
+        
         block.position = CGPoint(x: 0, y: 0)
         
-        block.fillColor = orange
-        block.strokeColor = orange
+        block.fillColor = green
+        block.strokeColor = green
         
         block.position = starting_block_position
         block.zPosition = 100000
@@ -148,6 +152,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block.physicsBody?.contactTestBitMask = physicsCategory.obstacle
         block.physicsBody?.isDynamic = true
         block.physicsBody?.friction = 0
+        block.addGlow()
         
         block.physicsBody?.affectedByGravity = false
         addChild(block)
@@ -195,7 +200,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score_label.isPaused = true
         
         
-        for i in stride(from: 60, through: 0, by: -1) {
+        for i in stride(from: 7, through: 0, by: -1) {
         
             let projected_path = SKShapeNode()
             
@@ -209,7 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             projected_path.zPosition = 200
             projected_path.path = line_path
-            projected_path.strokeColor = line_segment_colors.randomElement() ?? yellow
+            projected_path.strokeColor = green
             
             projected_path.lineWidth = 2
             //projected_path.glowWidth = 2
@@ -223,6 +228,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             projected_path.physicsBody?.isDynamic = true
             projected_path.physicsBody?.affectedByGravity = true
             projected_path.physicsBody?.pinned = true
+            projected_path.glowWidth = 5
+            
+            
+            let end_joint = SKShapeNode(circleOfRadius: 6.0)
+            end_joint.fillColor = green
+            end_joint.strokeColor = green
+            end_joint.position = ending_position
+            end_joint.addGlow()
+            addChild(end_joint)
+            
+            end_joints.append(end_joint)
+            
+            
             
             
             addChild(projected_path)
@@ -230,14 +248,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             let fall_forever = SKAction.repeatForever(fall)
             projected_path.run(fall_forever)
+            end_joint.run(fall_forever)
             projected_path.isPaused = true
+            end_joint.isPaused = true
             
             
             obstacles.append(projected_path)
             
         }
         
-        for _ in 0...100 {
+        for _ in 0...20 {
             make_obstacle()
         }
         
@@ -302,6 +322,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         ending_position = CGPoint(x: starting_position.x + (obstacle_length * cos(angle_in_degrees * .pi / 180)), y: starting_position.y + (obstacle_length * sin(angle_in_degrees * .pi / 180)))
+        
         let line_path:CGMutablePath = CGMutablePath()
         line_path.move(to: starting_position)
         line_path.addLine(to: ending_position)
@@ -309,7 +330,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         projected_path.zPosition = 200
         projected_path.path = line_path
-        projected_path.strokeColor = line_segment_colors.randomElement() ?? yellow
+        projected_path.strokeColor = green
         projected_path.lineWidth = 2
         //projected_path.glowWidth = 2
         
@@ -322,18 +343,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projected_path.physicsBody?.isDynamic = true
         projected_path.physicsBody?.affectedByGravity = true
         projected_path.physicsBody?.pinned = true
+        projected_path.glowWidth = 5
         
+        
+        let end_joint = SKShapeNode(circleOfRadius: 6.0)
+        end_joint.fillColor = green
+        end_joint.strokeColor = green
+        end_joint.position = ending_position
+        end_joint.addGlow()
+        addChild(end_joint)
+        end_joints.append(end_joint)
         let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.35)
         
         let fall_forever = SKAction.repeatForever(fall)
         
         projected_path.run(fall_forever)
+        end_joint.run(fall_forever)
         
         if game_has_started == false {
             projected_path.isPaused = true
+            end_joint.isPaused = true
         }
         
         addChild(projected_path)
+        //projected_path.addGlow()
         
         obstacles.append(projected_path)
         
@@ -469,6 +502,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     second_instructions.removeFromParent()
 
                 }
+                for joint in end_joints {
+                    joint.isPaused = false
+                }
             }
 
         }
@@ -545,18 +581,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 
             }
+            for joint in end_joints {
+                joint.isPaused = true
+            }
             
         }
-        if (obstacles.first?.path?.boundingBox.minY)! < (-3 * self.frame.height) {
-            obstacles.first?.removeAllActions()
-            obstacles.first?.removeFromParent()
-            obstacles.removeFirst()
-            print("removed")
-        }
-        if (obstacles.last?.path?.boundingBox.maxY)! < (3 * self.frame.height) {
-            print("obstacle made. reporting from update")
-            make_obstacle()
-        }
+//        if obstacles.first!.position.y < -1000 {
+//            obstacles.first?.removeAllActions()
+//            obstacles.first?.removeFromParent()
+//            obstacles.remove(at: 0)
+//            print("removed")
+//        }
+//        print(obstacles.last?.position.y)
+//
+//        if obstacles.last!.position.y < -500 {
+//            print("obstacle made. reporting from update")
+//            make_obstacle()
+//        }
     }
     
 }
