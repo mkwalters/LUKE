@@ -20,8 +20,9 @@
 		F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7391377219255B900C93AFD /* LaunchScreen.storyboard */; };
 		F7391384219255B900C93AFD /* LUKETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391383219255B900C93AFD /* LUKETests.swift */; };
 		F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739138E219255B900C93AFD /* LUKEUITests.swift */; };
+		F74BD0AD21A348E60014264B /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = F74BD0AC21A348E60014264B /* MyParticle.sks */; };
+		F74BD0AF21A35AFC0014264B /* StoreMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74BD0AE21A35AFC0014264B /* StoreMenu.swift */; };
 		F77AFCCE21A1E413000DA603 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77AFCCD21A1E413000DA603 /* StoreKit.framework */; };
-		F7C6AB8F21A28D580040D0BB /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7C6AB8E21A28D580040D0BB /* MyParticle.sks */; };
 		F7E25140219CB51800C99F52 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E2513F219CB51800C99F52 /* StartMenu.swift */; };
 		F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7E25142219D06C400C99F52 /* StartMenu.sks */; };
 /* End PBXBuildFile section */
@@ -69,8 +70,9 @@
 		F739138A219255B900C93AFD /* LUKEUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LUKEUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F739138E219255B900C93AFD /* LUKEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUKEUITests.swift; sourceTree = "<group>"; };
 		F7391390219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F74BD0AC21A348E60014264B /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
+		F74BD0AE21A35AFC0014264B /* StoreMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMenu.swift; sourceTree = "<group>"; };
 		F77AFCCD21A1E413000DA603 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		F7C6AB8E21A28D580040D0BB /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		F7E2513F219CB51800C99F52 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
 		F7E25142219D06C400C99F52 /* StartMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartMenu.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,14 +159,15 @@
 				F739136A219255B800C93AFD /* GameScene.sks */,
 				F739136C219255B800C93AFD /* Actions.sks */,
 				F739136E219255B800C93AFD /* GameScene.swift */,
-				F7C6AB8E21A28D580040D0BB /* MyParticle.sks */,
 				F7391370219255B800C93AFD /* GameViewController.swift */,
 				F7391372219255B800C93AFD /* Main.storyboard */,
 				F7391375219255B900C93AFD /* Assets.xcassets */,
 				F7391377219255B900C93AFD /* LaunchScreen.storyboard */,
+				F74BD0AC21A348E60014264B /* MyParticle.sks */,
 				F739137A219255B900C93AFD /* Info.plist */,
 				F7E2513F219CB51800C99F52 /* StartMenu.swift */,
 				F7E25142219D06C400C99F52 /* StartMenu.sks */,
+				F74BD0AE21A35AFC0014264B /* StoreMenu.swift */,
 			);
 			path = LUKE;
 			sourceTree = "<group>";
@@ -304,7 +307,7 @@
 				F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */,
 				F739136B219255B800C93AFD /* GameScene.sks in Resources */,
 				F7391376219255B900C93AFD /* Assets.xcassets in Resources */,
-				F7C6AB8F21A28D580040D0BB /* MyParticle.sks in Resources */,
+				F74BD0AD21A348E60014264B /* MyParticle.sks in Resources */,
 				F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */,
 				F739136D219255B800C93AFD /* Actions.sks in Resources */,
 			);
@@ -425,6 +428,7 @@
 				F739136F219255B800C93AFD /* GameScene.swift in Sources */,
 				F7E25140219CB51800C99F52 /* StartMenu.swift in Sources */,
 				F7391371219255B800C93AFD /* GameViewController.swift in Sources */,
+				F74BD0AF21A35AFC0014264B /* StoreMenu.swift in Sources */,
 				F7391369219255B800C93AFD /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

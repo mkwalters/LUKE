@@ -82,6 +82,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let block_y_offset = CGFloat(10)
     //let block_x_offset = CGFloat(10)
     
+    var instructions_background = SKSpriteNode()
+    
     override func didMove(to view: SKView) {
         
         create_scene()
@@ -107,6 +109,70 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             forces.append(0.0)
         }
         
+        instructions_background = SKSpriteNode(color: UIColor(displayP3Red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 0.9), size: CGSize(width: self.frame.width - 90, height: 200))
+        instructions_background.zPosition = 99999
+        
+        addChild(instructions_background)
+        
+        var instruction_background_corners = [CGPoint]()
+        
+        //top left
+        instruction_background_corners.append(
+            CGPoint(x: -1 * instructions_background.frame.width / 2, y: instructions_background.frame.height / 2)
+        )
+        //top right
+        instruction_background_corners.append(
+            CGPoint(x: instructions_background.frame.width / 2, y: instructions_background.frame.height / 2)
+        )
+        //bottom left
+        instruction_background_corners.append(
+            CGPoint(x: -1 * instructions_background.frame.width / 2, y: -1 * instructions_background.frame.height / 2)
+        )
+        //bottom right
+        instruction_background_corners.append(
+            CGPoint(x: instructions_background.frame.width / 2, y: -1 * instructions_background.frame.height / 2)
+        )
+        
+        for i in 0...3 {
+            let effect = SKShapeNode(circleOfRadius: 9.0)
+            effect.fillColor = green
+            
+            instructions_background.addChild(effect)
+            effect.position = instruction_background_corners[i]
+            effect.addGlow()
+        }
+        
+        var line_pairs = [[CGPoint]]()
+        //top
+        line_pairs.append([instruction_background_corners[0],instruction_background_corners[1]])
+        //bottom
+        line_pairs.append([instruction_background_corners[2],instruction_background_corners[3]])
+        //left
+        line_pairs.append([instruction_background_corners[0],instruction_background_corners[2]])
+        //right
+        line_pairs.append([instruction_background_corners[1],instruction_background_corners[3]])
+        
+        
+        for i in 0...3 {
+            let top_line = SKShapeNode()
+            let line_path:CGMutablePath = CGMutablePath()
+            line_path.move(to: line_pairs[i][0])
+            line_path.addLine(to: line_pairs[i][1])
+
+            top_line.zPosition = 2
+            top_line.path = line_path
+            top_line.strokeColor = green
+            top_line.position = CGPoint.zero
+            
+            top_line.lineWidth = 5
+            instructions_background.addChild(top_line)
+            top_line.glowWidth = 3
+            
+        }
+        
+        
+        //instructions_background.fillColor = UIColor.darkGray
+        //addChild(instructions_background)
         let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
         
         backgroundColor = UIColor(displayP3Red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 1.0)
@@ -118,21 +184,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score = 0
         
         first_instructions = SKLabelNode(text: "Press harder to move right")
-        first_instructions.position = CGPoint(x: 0, y: 50)
+        first_instructions.position = CGPoint(x: 0, y: 25)
         first_instructions.fontName = "Futura-MediumItalic"
         first_instructions.fontSize = 50
         first_instructions.fontColor = UIColor.white
         
-        addChild(first_instructions)
+        instructions_background.addChild(first_instructions)
         
         
         second_instructions = SKLabelNode(text: "Contact line to begin moving")
         second_instructions.position = CGPoint(x: 0, y: -50)
         second_instructions.fontName = "Futura-MediumItalic"
-        second_instructions.fontSize = 50
+        second_instructions.fontSize = 47
         second_instructions.fontColor = UIColor.white
         
-        addChild(second_instructions)
+        instructions_background.addChild(second_instructions)
         
         
         //I LIKE IT DIVIDED BY 3
@@ -230,7 +296,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             line_path.addLine(to: ending_position)
             
             
-            projected_path.zPosition = 200
+            projected_path.zPosition = 2
             projected_path.path = line_path
             projected_path.strokeColor = green
             projected_path.position = CGPoint.zero
@@ -440,6 +506,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //end_joint.run(fall_forever)
         if game_has_started {
             joint.run(fall_forever, withKey: "fall")
+            joint.yAcceleration = 300
         }
         if game_has_started == false {
             projected_path.isPaused = true
@@ -593,12 +660,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 score_label.run(spawn_forever)
                 
                 game_has_started = true
+                instructions_background.removeAllChildren()
+                instructions_background.removeFromParent()
                 for obstacle in obstacles {
                     obstacle.isPaused = false
                     score_label.isPaused = false
                     //print("game started")
-                    first_instructions.removeFromParent()
-                    second_instructions.removeFromParent()
+                    
 
                 }
                 for joint in joints {
@@ -607,6 +675,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     let fall_forever = SKAction.repeatForever(fall)
                     
                     joint.run(fall_forever, withKey: "fall")
+                    joint.yAcceleration = 300
                 }
             }
 
@@ -693,6 +762,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             for joint in joints {
                 joint.removeAction(forKey: "fall")
+                joint.yAcceleration = 0
             }
             vibrateWithHaptic()
         }

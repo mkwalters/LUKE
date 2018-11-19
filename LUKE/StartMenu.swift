@@ -32,7 +32,7 @@ class StartMenu: SKScene {
     var title = SKLabelNode(text: "LUKE")
     
     var rate = SKLabelNode(text: "RATE")
-    let ads = SKLabelNode(text: "ADS")
+    let store = SKSpriteNode(imageNamed: "store")
     let green = SKColor(red: 57.0 / 255.0, green: 255.0 / 255.0, blue: 52.0 / 255.0, alpha: 20.0)
     
     func get_high_score() -> Int {
@@ -49,14 +49,14 @@ class StartMenu: SKScene {
 //            UserDefaults.standard.set(true, forKey: "already flashed rate")
 //        }
         
-        ads.position = CGPoint(x: 0, y: -475)
+        store.position = CGPoint(x: 0, y: -425)
         // ads.fontName = "PressStart2P"
-        ads.fontSize = 60
-        ads.name = "ads"
-        ads.zPosition = 4
         
+        store.name = "store"
+        store.zPosition = 4
+        store.setScale(2.0)
         
-        addChild(ads)
+        addChild(store)
         
         
         
@@ -67,12 +67,12 @@ class StartMenu: SKScene {
 //        addChild(red_circle_with_slash)
         
         
-        if let _ = UserDefaults.standard.value(forKey: "paid_version") {
-            
-            ads.removeFromParent()
-            //red_circle_with_slash.removeFromParent()
-        }
-        
+//        if let _ = UserDefaults.standard.value(forKey: "paid_version") {
+//
+//            ads.removeFromParent()
+//            //red_circle_with_slash.removeFromParent()
+//        }
+//
         
         high_score.position = CGPoint(x: 0, y: 0)
         high_score.fontName = "Futura-MediumItalic"
@@ -166,8 +166,8 @@ class StartMenu: SKScene {
                     {
                         // Configure the view.
                         let skView = self.view! as SKView
-                        skView.showsFPS = true
-                        skView.showsNodeCount = true
+//                        skView.showsFPS = true
+//                        skView.showsNodeCount = true
                         
                         /* Sprite Kit applies additional optimizations to improve rendering performance */
                         skView.ignoresSiblingOrder = true
