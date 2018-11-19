@@ -21,6 +21,7 @@
 		F7391384219255B900C93AFD /* LUKETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7391383219255B900C93AFD /* LUKETests.swift */; };
 		F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739138E219255B900C93AFD /* LUKEUITests.swift */; };
 		F77AFCCE21A1E413000DA603 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77AFCCD21A1E413000DA603 /* StoreKit.framework */; };
+		F7C6AB8F21A28D580040D0BB /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7C6AB8E21A28D580040D0BB /* MyParticle.sks */; };
 		F7E25140219CB51800C99F52 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E2513F219CB51800C99F52 /* StartMenu.swift */; };
 		F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7E25142219D06C400C99F52 /* StartMenu.sks */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		F739138E219255B900C93AFD /* LUKEUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUKEUITests.swift; sourceTree = "<group>"; };
 		F7391390219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F77AFCCD21A1E413000DA603 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F7C6AB8E21A28D580040D0BB /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		F7E2513F219CB51800C99F52 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
 		F7E25142219D06C400C99F52 /* StartMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartMenu.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,6 +157,7 @@
 				F739136A219255B800C93AFD /* GameScene.sks */,
 				F739136C219255B800C93AFD /* Actions.sks */,
 				F739136E219255B800C93AFD /* GameScene.swift */,
+				F7C6AB8E21A28D580040D0BB /* MyParticle.sks */,
 				F7391370219255B800C93AFD /* GameViewController.swift */,
 				F7391372219255B800C93AFD /* Main.storyboard */,
 				F7391375219255B900C93AFD /* Assets.xcassets */,
@@ -301,6 +304,7 @@
 				F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */,
 				F739136B219255B800C93AFD /* GameScene.sks in Resources */,
 				F7391376219255B900C93AFD /* Assets.xcassets in Resources */,
+				F7C6AB8F21A28D580040D0BB /* MyParticle.sks in Resources */,
 				F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */,
 				F739136D219255B800C93AFD /* Actions.sks in Resources */,
 			);
