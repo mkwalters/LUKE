@@ -76,6 +76,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let n_forces = 10
     var forces = [Double]()
     
+    let score_y_offset = CGFloat(20)
+    let score_x_offset = CGFloat(20)
+    
+    let block_y_offset = CGFloat(10)
+    //let block_x_offset = CGFloat(10)
+    
     override func didMove(to view: SKView) {
         
         create_scene()
@@ -103,7 +109,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
         
-        backgroundColor = UIColor(displayP3Red: 39.0 / 255.0, green: 39.0 / 255.0, blue: 39.0 / 255.0, alpha: 1.0)
+        backgroundColor = UIColor(displayP3Red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 1.0)
         game_has_started = false
         game_ended = false
         obstacles = []
@@ -132,7 +138,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //I LIKE IT DIVIDED BY 3
         obstacle_length = self.frame.width / 3
         
-        starting_block_position = CGPoint(x: -1 * self.frame.width / 2 + CGFloat(block_radius), y: -1 * self.frame.height / 2 + CGFloat(block_radius))
+        starting_block_position = CGPoint(x: -1 * self.frame.width / 2 + CGFloat(block_radius), y: -1 * self.frame.height / 2 + CGFloat(block_radius) + block_y_offset)
         block = SKShapeNode(circleOfRadius: CGFloat(block_radius))
         
         block.position = CGPoint(x: 0, y: 0)
@@ -166,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score_label.fontSize = 90
         score_label.fontColor = UIColor.white
         score_label.horizontalAlignmentMode = .right
-        score_label.position = CGPoint(x: self.frame.width / 2 - 5 , y: self.frame.height / 2 - score_label.frame.height - 5)
+        score_label.position = CGPoint(x: self.frame.width / 2 - score_x_offset , y: self.frame.height / 2 - score_label.frame.height - score_y_offset)
         
         addChild(score_label)
         
@@ -175,7 +181,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         high_score_label.fontSize = 90
         high_score_label.fontColor = UIColor.white
         high_score_label.horizontalAlignmentMode = .left
-        high_score_label.position = CGPoint(x: -1 * self.frame.width / 2 + 5 , y: self.frame.height / 2 - high_score_label.frame.height - 5)
+        high_score_label.position = CGPoint(x: -1 * self.frame.width / 2 + score_x_offset , y: self.frame.height / 2 - high_score_label.frame.height - score_y_offset)
         
         addChild(high_score_label)
         
@@ -204,6 +210,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score_label.isPaused = true
         
         
+        let joint = SKEmitterNode(fileNamed: "MyParticle")!
+        joint.position = CGPoint.zero
+        addChild(joint)
+        joints.append(joint)
+        
         for i in stride(from: 20, through: 0, by: -1) {
         
             let projected_path = SKShapeNode()
@@ -222,6 +233,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             projected_path.zPosition = 200
             projected_path.path = line_path
             projected_path.strokeColor = green
+            projected_path.position = CGPoint.zero
             
             projected_path.lineWidth = 2
             //projected_path.glowWidth = 2
@@ -500,7 +512,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     average_force = Double(touch.maximumPossibleForce)
                 }
                 
-                block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width - CGFloat(2 * block_radius)))/touch.maximumPossibleForce ) 
+                block.position.x = starting_block_position.x + ( ((touch.force) * (self.frame.width - CGFloat(2 * block_radius)))/touch.maximumPossibleForce )
 
 
             }
@@ -568,6 +580,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 let spawn = SKAction.run({
                     self.make_obstacle(starting: false, new: true)
+//                    self.obstacles.first!.removeAllActions()
+//                    self.obstacles.first!.removeFromParent()
+//                    self.obstacles.removeFirst()
 
                 })
                 let wait = SKAction.wait(forDuration: 0.28)
@@ -608,17 +623,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         //print( obstacles.first!.frame.minY)
-        if obstacles.first!.frame.minY < CGFloat(-3000) {
-            print("purging")
-            obstacles.first!.removeAllActions()
-            obstacles.first!.removeFromParent()
-            obstacles.removeFirst()
-//            end_joints.first!.removeAllActions()
-//            end_joints.first!.removeFromParent()
-//            end_joints.removeFirst()
-            //make_obstacle(starting: false, new: true)
-            
-        }
+        
+//        print(obstacles.first!.frame.minY)
+//        if obstacles.first!.frame.minY < CGFloat(-2000) {
+//            print("purging")
+//            obstacles.first!.removeAllActions()
+//            obstacles.first!.removeFromParent()
+//            obstacles.removeFirst()
+////            end_joints.first!.removeAllActions()
+////            end_joints.first!.removeFromParent()
+////            end_joints.removeFirst()
+//            //make_obstacle(starting: false, new: true)
+//
+//        }
         
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
             score_label.isPaused = true
@@ -654,6 +671,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             restart_button.setScale(3.0)
             restart_button.zPosition = 9999999
             restart_button.name = "restart"
+            //restart_button.addGlow()
             addChild(restart_button)
             
             let home_button = SKSpriteNode(imageNamed: "home")
@@ -662,6 +680,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             home_button.zPosition = 9999999
             home_button.name = "home"
             addChild(home_button)
+            //home_button.addGlow()
             
             
             for obstacle in obstacles {

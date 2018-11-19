@@ -33,7 +33,7 @@ class StartMenu: SKScene {
     
     var rate = SKLabelNode(text: "RATE")
     let ads = SKLabelNode(text: "ADS")
-    
+    let green = SKColor(red: 57.0 / 255.0, green: 255.0 / 255.0, blue: 52.0 / 255.0, alpha: 20.0)
     
     func get_high_score() -> Int {
         return(UserDefaults.standard.integer(forKey: "high_score"))
@@ -41,7 +41,7 @@ class StartMenu: SKScene {
     
     override func didMove(to view: SKView) {
 
-        self.backgroundColor =  UIColor(displayP3Red: 39.0 / 255.0, green: 16.0 / 255.0, blue: 51.0 / 255.0, alpha: 1.0)
+        self.backgroundColor = UIColor.black
         //self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         //scene?.scaleMode = .aspectFill
 //        if get_high_score() > 1 && UserDefaults.standard.bool(forKey: "already flashed rate") == false {
@@ -77,7 +77,7 @@ class StartMenu: SKScene {
         high_score.position = CGPoint(x: 0, y: 0)
         high_score.fontName = "Futura-MediumItalic"
         high_score.text = String(describing: get_high_score())
-        high_score.fontColor = SKColor.blue
+        high_score.fontColor = SKColor.white
         high_score.fontSize = 80
         
         addChild(high_score)
@@ -92,11 +92,11 @@ class StartMenu: SKScene {
         
         play_button.position = CGPoint(x: 0, y: -200)
         play_button.name = "play"
-        play_button.setScale(3.0)
+        play_button.setScale(2.2)
         addChild(play_button)
         
         title.position = CGPoint(x: 0, y: 325)
-        title.fontColor = SKColor.purple
+        title.fontColor = green
         title.fontName = "Futura-MediumItalic"
         title.zPosition = 10000
         title.fontSize = 150
