@@ -103,6 +103,7 @@ class StartMenu: SKScene {
         
         addChild(title)
         
+        
         remove_ads.position = CGPoint(x: 0, y: -400)
         remove_ads.fontColor = SKColor.red
         remove_ads.fontSize = 80
@@ -176,6 +177,27 @@ class StartMenu: SKScene {
                         scene.scaleMode = .aspectFill
                         
                         skView.presentScene(scene)
+                    }
+                }
+                
+                if name == "store" {
+                    
+                    if let scene = StoreMenu(fileNamed:"StoreMenu")
+                    {
+                        // Configure the view.
+                        let skView = self.view! as SKView
+                        //                        skView.showsFPS = true
+                        //                        skView.showsNodeCount = true
+                        
+                        /* Sprite Kit applies additional optimizations to improve rendering performance */
+                        skView.ignoresSiblingOrder = true
+                        
+                        /* Set the scale mode to scale to fit the window */
+                        scene.scaleMode = .aspectFill
+                        print("go to store")
+                        skView.presentScene(scene)
+                    } else {
+                        print("failed")
                     }
                 }
                 

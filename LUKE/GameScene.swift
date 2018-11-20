@@ -52,8 +52,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var obstacles = [SKShapeNode]()
     var game_ended = false
-    //let line = SKSpriteNode(imageNamed: "line")
-    
     
     var obstacle_length = CGFloat()
     
@@ -78,9 +76,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let score_y_offset = CGFloat(20)
     let score_x_offset = CGFloat(20)
+    var number_of_starting_obstacles = 0
     
-    let block_y_offset = CGFloat(10)
-    //let block_x_offset = CGFloat(10)
+    let block_y_offset = CGFloat(25)
     
     var instructions_background = SKSpriteNode()
     
@@ -169,10 +167,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             top_line.glowWidth = 3
             
         }
-        
-        
-        //instructions_background.fillColor = UIColor.darkGray
-        //addChild(instructions_background)
+
         let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
         
         backgroundColor = UIColor(displayP3Red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0, alpha: 1.0)
@@ -180,8 +175,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         game_ended = false
         obstacles = []
         block_radius = Double(self.frame.width / 10)
-        line_segment_colors = [yellow, light_blue, mustard_yellow]
         score = 0
+        number_of_starting_obstacles = 20
         
         first_instructions = SKLabelNode(text: "Press harder to move right")
         first_instructions.position = CGPoint(x: 0, y: 25)
@@ -190,8 +185,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         first_instructions.fontColor = UIColor.white
         
         instructions_background.addChild(first_instructions)
-        
-        
         second_instructions = SKLabelNode(text: "Contact line to begin moving")
         second_instructions.position = CGPoint(x: 0, y: -50)
         second_instructions.fontName = "Futura-MediumItalic"
@@ -235,7 +228,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         score_label = SKLabelNode(text: String(score))
         score_label.fontName = "Futura-MediumItalic"
-        score_label.fontSize = 90
+        score_label.fontSize = 70
         score_label.fontColor = UIColor.white
         score_label.horizontalAlignmentMode = .right
         score_label.position = CGPoint(x: self.frame.width / 2 - score_x_offset , y: self.frame.height / 2 - score_label.frame.height - score_y_offset)
@@ -244,7 +237,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         high_score_label = SKLabelNode(text: String(latest_high_score))
         high_score_label.fontName = "Futura-MediumItalic"
-        high_score_label.fontSize = 90
+        high_score_label.fontSize = 70
         high_score_label.fontColor = UIColor.white
         high_score_label.horizontalAlignmentMode = .left
         high_score_label.position = CGPoint(x: -1 * self.frame.width / 2 + score_x_offset , y: self.frame.height / 2 - high_score_label.frame.height - score_y_offset)
@@ -281,91 +274,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(joint)
         joints.append(joint)
         
-        for i in stride(from: 20, through: 0, by: -1) {
         
-            let projected_path = SKShapeNode()
-            
-            let starting_position = CGPoint(x: 0, y: CGFloat(i) * -1 * obstacle_length)
-            let ending_position = CGPoint(x: 0, y: CGFloat(i + 1) * -1 * obstacle_length)
-            
-            
-            let fall_distance = -100
-            
-            let line_path:CGMutablePath = CGMutablePath()
-            line_path.move(to: starting_position)
-            line_path.addLine(to: ending_position)
-            
-            
-            projected_path.zPosition = 2
-            projected_path.path = line_path
-            projected_path.strokeColor = green
-            projected_path.position = CGPoint.zero
-            
-            projected_path.lineWidth = 2
-            //projected_path.glowWidth = 2
-            
-            projected_path.name = "projected_path"
-            
-            projected_path.physicsBody = SKPhysicsBody(edgeChainFrom: line_path)
-            projected_path.physicsBody?.categoryBitMask = physicsCategory.obstacle
-            projected_path.physicsBody?.collisionBitMask = physicsCategory.projected_velocity
-            projected_path.physicsBody?.contactTestBitMask = physicsCategory.projected_velocity
-            projected_path.physicsBody?.isDynamic = true
-            projected_path.physicsBody?.affectedByGravity = true
-            projected_path.physicsBody?.pinned = true
-            projected_path.glowWidth = 5
-            
-            
-//            let end_joint = SKShapeNode(circleOfRadius: 10.0)
-//            end_joint.fillColor = green
-//            end_joint.strokeColor = green
-//            end_joint.position = ending_position
-            
-            let joint = SKEmitterNode(fileNamed: "MyParticle")!
-            joint.position = ending_position
-            addChild(joint)
-            joints.append(joint)
-            
-//            end_joint.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(block_radius))
-//            end_joint.physicsBody?.affectedByGravity = false
-//
-//            end_joint.zPosition = 50
-//
-//            end_joint.name = "end joint"
-//
-//            end_joint.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(block_radius))
-//            end_joint.physicsBody?.categoryBitMask = physicsCategory.obstacle
-//            end_joint.physicsBody?.collisionBitMask = 0
-//            end_joint.physicsBody?.contactTestBitMask = physicsCategory.projected_velocity
-//            end_joint.physicsBody?.isDynamic = false
-//            end_joint.physicsBody?.friction = 0
-//            end_joint.physicsBody?.affectedByGravity = false
-            //addChild(end_joint)
-            //end_joint.addGlow()
-//            block.addGlow()
-//
-//            block.physicsBody?.affectedByGravity = false
-//            addChild(block)
-            
-            //end_joints.append(end_joint)
-            
-            
-            
-            
-            addChild(projected_path)
-            let fall = SKAction.move(by: CGVector(dx: 0, dy: fall_distance), duration: 0.28)
-            
-            let fall_forever = SKAction.repeatForever(fall)
-            projected_path.run(fall_forever)
-            //joint.run(fall_forever, withKey: "fall")
-            projected_path.isPaused = true
-            //joint.isPaused = true
-
-            
-            
-            
-            obstacles.append(projected_path)
-            
+        for i in stride(from: 20, through: 0, by: -1) {
+            make_obstacle(starting: true, new: false)
         }
         
         for _ in 0...20 {
@@ -374,27 +285,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
     }
-//    var realPaused = false
-//    {
-//        didSet
-//        {
-//            isPaused = realPaused
-//        }
-//    }
-//    override var isPaused : Bool
-//        {
-//        get
-//        {
-//            return realPaused
-//        }
-//        set
-//        {
-//            //we do not want to use newValue because it is being set without our knowledge
-//            for obstacle in obstacles {
-//                obstacle.isPaused = !realPaused
-//            }
-//        }
-//    }
+    
+    func determine_obstacle_angle() -> CGFloat {
+        var angle_in_degrees = CGFloat((arc4random() % 100) + 40)
+        if obstacles.count > 0 {
+            if (self.frame.width / 2) - obstacle_length <  obstacles.last!.path!.boundingBox.maxX   {
+                //print("too far right")
+                angle_in_degrees = CGFloat((arc4random() % 50 ) + 90)
+            }
+        
+        
+            if (-1 * self.frame.width / 2) + obstacle_length > obstacles.last!.path!.boundingBox.minX   {
+                //print("too far left")
+                angle_in_degrees = CGFloat((arc4random() % 50 ) + 40 )
+            }
+        }
+        flip_angle_switch(angle: angle_in_degrees)
+        return angle_in_degrees
+    }
+    
+    func flip_angle_switch(angle: CGFloat) {
+        if angle < 90 {
+            last_obstacle_direction = "right"
+        } else {
+            last_obstacle_direction = "left"
+        }
+    }
     
     func make_obstacle(starting: Bool, new: Bool ) {
         
@@ -407,47 +323,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var starting_position = CGPoint(x: 400, y: -700)
         var ending_position = CGPoint(x: 300, y: 300)
         
-        if last_obstacle_direction == "left" {
-            starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.minX, y: obstacles.last!.path!.boundingBox.maxY)
-        } else {
-            starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.maxX, y: obstacles.last!.path!.boundingBox.maxY)
+        if obstacles.count > 0 {
+            if last_obstacle_direction == "left" {
+                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.minX, y: obstacles.last!.path!.boundingBox.maxY)
+            } else {
+                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.maxX, y: obstacles.last!.path!.boundingBox.maxY)
+            }
         }
         
-        
-        
-        var angle_in_degrees = CGFloat((arc4random() % 100) + 40)
-        
-        if (self.frame.width / 2) - obstacle_length <  obstacles.last!.path!.boundingBox.maxX   {
-            //print("too far right")
-            angle_in_degrees = CGFloat((arc4random() % 50 ) + 90)
-        }
+        let angle_in_degrees = self.determine_obstacle_angle()
 
-        if (-1 * self.frame.width / 2) + obstacle_length > obstacles.last!.path!.boundingBox.minX   {
-            //print("too far left")
-            angle_in_degrees = CGFloat((arc4random() % 50 ) + 40 )
-        }
-
-        
-        if angle_in_degrees < 90 {
-            last_obstacle_direction = "right"
-        } else {
-            last_obstacle_direction = "left"
-        }
-        
         ending_position = CGPoint(x: starting_position.x + (obstacle_length * cos(angle_in_degrees * .pi / 180)), y: starting_position.y + (obstacle_length * sin(angle_in_degrees * .pi / 180)))
         
         if new {
             starting_position.y += CGFloat(fall_distance)
             ending_position.y += CGFloat(fall_distance)
-
+        }
+        
+        if starting {
+            starting_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles) * -1 * obstacle_length)
+            ending_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles + 1) * -1 * obstacle_length)
+            number_of_starting_obstacles -= 1
         }
         
         
         let line_path:CGMutablePath = CGMutablePath()
         line_path.move(to: starting_position)
         line_path.addLine(to: ending_position)
-        
-
         projected_path.zPosition = 200
         projected_path.path = line_path
         projected_path.strokeColor = green
@@ -466,58 +368,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projected_path.glowWidth = 5
         
         
-//        let end_joint = SKShapeNode(circleOfRadius: 10.0)
-//        end_joint.fillColor = green
-//        end_joint.strokeColor = green
-//        end_joint.position = ending_position
         
         let joint = SKEmitterNode(fileNamed: "MyParticle")!
         joint.position = ending_position
         addChild(joint)
         
         joints.append(joint)
-        
-        
-        
-//        end_joint.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(block_radius))
-//        end_joint.physicsBody?.affectedByGravity = false
-//
-//        end_joint.zPosition = 50
-//
-//        end_joint.name = "end joint"
-//
-//        end_joint.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(block_radius))
-//        end_joint.physicsBody?.categoryBitMask = physicsCategory.obstacle
-//        end_joint.physicsBody?.collisionBitMask = 0
-//        end_joint.physicsBody?.contactTestBitMask = physicsCategory.projected_velocity
-//        end_joint.physicsBody?.isDynamic = false
-//        end_joint.physicsBody?.friction = 0
-//        end_joint.physicsBody?.affectedByGravity = false
-        
-//        addChild(end_joint)
-//        end_joint.addGlow()
-        
-        //end_joints.append(end_joint)
-        let fall = SKAction.move(by: CGVector(dx: 0, dy: fall_distance), duration: 0.28)
-        
-        let fall_forever = SKAction.repeatForever(fall)
-        
-        projected_path.run(fall_forever)
-        //end_joint.run(fall_forever)
+
+        run_fall_forever(node: projected_path)
         if game_has_started {
-            joint.run(fall_forever, withKey: "fall")
+            run_fall_forever(node: joint)
             joint.yAcceleration = 300
         }
         if game_has_started == false {
             projected_path.isPaused = true
             //end_joint.isPaused = true
         }
-        
         addChild(projected_path)
-        //projected_path.addGlow()
         
         obstacles.append(projected_path)
-        
         
     }
     
@@ -525,7 +394,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if score > UserDefaults.standard.integer(forKey: "high_score") {
             UserDefaults.standard.set(new_score, forKey: "high_score")
-            //print(UserDefaults.standard.integer(forKey: "high_score"))
         }
     }
     
@@ -568,7 +436,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 forces.remove(at: 0)
                 forces.append(Double(touch.force))
                 
-                
                 var average_force = 0.0
                 for force in forces {
                     average_force += force
@@ -589,6 +456,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    func go_to_start_menu() {
+        if let scene = StartMenu(fileNamed:"StartMenu")
+        {
+            let skView = self.view! as SKView
+            //skView.showsFPS = true
+            //skView.showsNodeCount = true
+            
+            skView.ignoresSiblingOrder = true
+
+            scene.scaleMode = .aspectFill
+            
+            skView.presentScene(scene)
+        }
+    }
+    
     
     func vibrateWithHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
@@ -601,7 +483,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if game_ended == false {
             block.position = starting_block_position
         }
-        
         for touch in touches{
             let positionInScene = touch.location(in: self)
             let touchedNode = atPoint(positionInScene)
@@ -611,21 +492,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     restart_scene()
                 }
                 if name == "home" {
-                    if let scene = StartMenu(fileNamed:"StartMenu")
-                    {
-                        // Configure the view.
-                        let skView = self.view! as SKView
-                        skView.showsFPS = true
-                        skView.showsNodeCount = true
-                        
-                        /* Sprite Kit applies additional optimizations to improve rendering performance */
-                        skView.ignoresSiblingOrder = true
-                        
-                        /* Set the scale mode to scale to fit the window */
-                        scene.scaleMode = .aspectFill
-                        
-                        skView.presentScene(scene)
-                    }
+                    go_to_start_menu()
                 }
             }
         }
@@ -634,47 +501,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
     
+    func run_fall_forever(node: SKNode) {
+        let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.28)
+        node.run(SKAction.repeatForever(fall), withKey: "fall")
+    }
+    
+    func start_obstacle_spawn() {
+        let spawn = SKAction.run({
+            self.make_obstacle(starting: false, new: true)
+            
+        })
+        let wait = SKAction.wait(forDuration: 0.28)
+        
+        let sequence = SKAction.sequence([wait, spawn])
+        
+        let spawn_forever = SKAction.repeatForever(sequence)
+        score_label.run(spawn_forever)
+    }
+    func unpause_obstacles() {
+        for obstacle in obstacles {
+            obstacle.isPaused = false
+            score_label.isPaused = false
+            //print("game started")
+        }
+    }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        //print("touching")
-        if contact.bodyA.node?.name == "end joint" || contact.bodyB.node?.name == "end joint" {
-            //vibrateWithHaptic()
-        }
-
+        
         if contact.bodyA.node?.name == "obstacle" || contact.bodyB.node?.name == "obstacle" {
 
             if game_has_started == false {
                 
-                let spawn = SKAction.run({
-                    self.make_obstacle(starting: false, new: true)
-//                    self.obstacles.first!.removeAllActions()
-//                    self.obstacles.first!.removeFromParent()
-//                    self.obstacles.removeFirst()
-
-                })
-                let wait = SKAction.wait(forDuration: 0.28)
-
-                let sequence = SKAction.sequence([wait, spawn])
-
-                let spawn_forever = SKAction.repeatForever(sequence)
-                score_label.run(spawn_forever)
-                
+                start_obstacle_spawn()
                 game_has_started = true
-                instructions_background.removeAllChildren()
                 instructions_background.removeFromParent()
-                for obstacle in obstacles {
-                    obstacle.isPaused = false
-                    score_label.isPaused = false
-                    //print("game started")
-                    
-
-                }
+                unpause_obstacles()
                 for joint in joints {
-                    let fall = SKAction.move(by: CGVector(dx: 0, dy: -100), duration: 0.28)
-                    
-                    let fall_forever = SKAction.repeatForever(fall)
-                    
-                    joint.run(fall_forever, withKey: "fall")
+                    run_fall_forever(node: joint)
                     joint.yAcceleration = 300
                 }
             }
@@ -690,111 +553,59 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return(UserDefaults.standard.integer(forKey: "death_count"))
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        //print( obstacles.first!.frame.minY)
+    func add_restart_and_home_button() {
+        let restart_button = SKSpriteNode(imageNamed: "replay")
+        restart_button.position = CGPoint(x: 0, y: 100)
+        restart_button.setScale(3.0)
+        restart_button.zPosition = 9999999
+        restart_button.name = "restart"
+        //restart_button.addGlow()
+        addChild(restart_button)
         
-//        print(obstacles.first!.frame.minY)
-//        if obstacles.first!.frame.minY < CGFloat(-2000) {
-//            print("purging")
-//            obstacles.first!.removeAllActions()
-//            obstacles.first!.removeFromParent()
-//            obstacles.removeFirst()
-////            end_joints.first!.removeAllActions()
-////            end_joints.first!.removeFromParent()
-////            end_joints.removeFirst()
-//            //make_obstacle(starting: false, new: true)
-//
-//        }
+        let home_button = SKSpriteNode(imageNamed: "home")
+        home_button.position = CGPoint(x: 0, y: -100)
+        home_button.setScale(1.6)
+        home_button.zPosition = 9999999
+        home_button.name = "home"
+        addChild(home_button)
+    }
+    
+    func pause_obstacles() {
+        for obstacle in obstacles {
+            obstacle.isPaused = true
+        }
+        score_label.isPaused = true
+    }
+    func pause_joints() {
+        for joint in joints {
+            joint.removeAction(forKey: "fall")
+            joint.yAcceleration = 0
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+
         
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
-            score_label.isPaused = true
+            
             game_ended = true
             update_high_score(new_score: Double(score))
             update_death_count()
-                    if get_high_score() > 100 && UserDefaults.standard.bool(forKey: "already flashed rate") == false && get_death_count() % 30 == 0 {
-                        SKStoreReviewController.requestReview()
-                        UserDefaults.standard.set(true, forKey: "already flashed rate")
-                    }
             
-            //UNCOMMENT THIS GUY FOR ADS TO BE PRESENT
-            let current_death_count = UserDefaults.standard.integer(forKey: "death_count")
-            let high_score = UserDefaults.standard.integer(forKey: "high_score")
-            var frequency = 0
-            if high_score > 100 {
-                frequency = 1
-            } else if high_score > 60 {
-                frequency = 2
-            } else if high_score > 30 {
-                frequency = 3
-            } else {
-                frequency = 5
-            }
-            
-            
-            if current_death_count > 10 && current_death_count % frequency == 0 {
-                
+            if get_high_score() > 10 && get_death_count() % 5 == 0 {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
             }
-            let restart_button = SKSpriteNode(imageNamed: "replay")
-            restart_button.position = CGPoint(x: 0, y: 100)
-            restart_button.setScale(3.0)
-            restart_button.zPosition = 9999999
-            restart_button.name = "restart"
-            //restart_button.addGlow()
-            addChild(restart_button)
+            add_restart_and_home_button()
             
-            let home_button = SKSpriteNode(imageNamed: "home")
-            home_button.position = CGPoint(x: 0, y: -100)
-            home_button.setScale(1.6)
-            home_button.zPosition = 9999999
-            home_button.name = "home"
-            addChild(home_button)
-            //home_button.addGlow()
-            
-            
-            for obstacle in obstacles {
-                
-                obstacle.isPaused = true
-                obstacle.strokeColor = UIColor.red
-                
-                
-            }
-            
-            for joint in joints {
-                joint.removeAction(forKey: "fall")
-                joint.yAcceleration = 0
-            }
+            pause_obstacles()
+            pause_joints()
+
             vibrateWithHaptic()
         }
         if game_has_started == false || game_ended == true {
-            score_label.isPaused = true
-            for obstacle in obstacles {
-                
-                obstacle.isPaused = true
-                
-                
-            }
-            for joint in end_joints {
-                joint.isPaused = true
-            }
-            
-            
-            
+            pause_obstacles()
         }
-        
-        
-//        if obstacles.first!.position.y < -1000 {
-//            obstacles.first?.removeAllActions()
-//            obstacles.first?.removeFromParent()
-//            obstacles.remove(at: 0)
-//            print("removed")
-//        }
-//        print(obstacles.last?.position.y)
-//
-        
-//        if obstacles.last!.position.y < CGFloat(-500) {
-//            make_obstacle(starting: false, new: true)
-//        }
+
     }
     
 }

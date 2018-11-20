@@ -22,6 +22,7 @@
 		F739138F219255B900C93AFD /* LUKEUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F739138E219255B900C93AFD /* LUKEUITests.swift */; };
 		F74BD0AD21A348E60014264B /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = F74BD0AC21A348E60014264B /* MyParticle.sks */; };
 		F74BD0AF21A35AFC0014264B /* StoreMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74BD0AE21A35AFC0014264B /* StoreMenu.swift */; };
+		F75171EE21A38EFF0075FB66 /* StoreMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F75171ED21A38EFF0075FB66 /* StoreMenu.sks */; };
 		F77AFCCE21A1E413000DA603 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77AFCCD21A1E413000DA603 /* StoreKit.framework */; };
 		F7E25140219CB51800C99F52 /* StartMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E2513F219CB51800C99F52 /* StartMenu.swift */; };
 		F7E25143219D06C400C99F52 /* StartMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = F7E25142219D06C400C99F52 /* StartMenu.sks */; };
@@ -72,6 +73,7 @@
 		F7391390219255B900C93AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F74BD0AC21A348E60014264B /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
 		F74BD0AE21A35AFC0014264B /* StoreMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreMenu.swift; sourceTree = "<group>"; };
+		F75171ED21A38EFF0075FB66 /* StoreMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StoreMenu.sks; sourceTree = "<group>"; };
 		F77AFCCD21A1E413000DA603 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F7E2513F219CB51800C99F52 /* StartMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMenu.swift; sourceTree = "<group>"; };
 		F7E25142219D06C400C99F52 /* StartMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartMenu.sks; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				F7E2513F219CB51800C99F52 /* StartMenu.swift */,
 				F7E25142219D06C400C99F52 /* StartMenu.sks */,
 				F74BD0AE21A35AFC0014264B /* StoreMenu.swift */,
+				F75171ED21A38EFF0075FB66 /* StoreMenu.sks */,
 			);
 			path = LUKE;
 			sourceTree = "<group>";
@@ -309,6 +312,7 @@
 				F7391376219255B900C93AFD /* Assets.xcassets in Resources */,
 				F74BD0AD21A348E60014264B /* MyParticle.sks in Resources */,
 				F7391379219255B900C93AFD /* LaunchScreen.storyboard in Resources */,
+				F75171EE21A38EFF0075FB66 /* StoreMenu.sks in Resources */,
 				F739136D219255B800C93AFD /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
