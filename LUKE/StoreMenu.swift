@@ -33,7 +33,7 @@ class StoreMenu: SKScene {
     var remove_ads = SKLabelNode(text: "Remove ads")
     var restore_purchase = SKLabelNode(text: "Restore purchase")
     
-    var title = SKLabelNode(text: "LUKE")
+    var title = SKLabelNode(text: "Store")
     var instructions_background = SKSpriteNode()
     var instructions_background2 = SKSpriteNode()
     
@@ -51,9 +51,9 @@ class StoreMenu: SKScene {
         
         
         instructions_background = SKSpriteNode(color: UIColor(displayP3Red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 0.9), size: CGSize(width: self.frame.width - 90, height: 200))
-        instructions_background.position.y += 200
+        instructions_background.position.y += 150
         instructions_background.zPosition = 99999
-        
+        instructions_background.name = "ads"
         addChild(instructions_background)
         
         var instruction_background_corners = [CGPoint]()
@@ -115,14 +115,15 @@ class StoreMenu: SKScene {
         remove_ads.fontColor = green
         remove_ads.fontSize = 80
         remove_ads.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
+        remove_ads.name = "ads"
         
         instructions_background.addChild(remove_ads)
         
         
         instructions_background2 = SKSpriteNode(color: UIColor(displayP3Red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 0.9), size: CGSize(width: self.frame.width - 90, height: 200))
-        instructions_background2.position.y -= 200
+        instructions_background2.position.y -= 175
         instructions_background2.zPosition = 99999
-        
+        instructions_background2.name = "restore"
         addChild(instructions_background2)
         
         //var instruction_background_corners = [CGPoint]()
@@ -184,6 +185,7 @@ class StoreMenu: SKScene {
         restore_purchase.fontColor = green
         restore_purchase.fontSize = 80
         restore_purchase.verticalAlignmentMode = SKLabelVerticalAlignmentMode.center
+        restore_purchase.name = "restore"
         
         instructions_background2.addChild(restore_purchase)
         
@@ -247,13 +249,13 @@ class StoreMenu: SKScene {
 //        play_button.setScale(2.2)
 //        addChild(play_button)
 //
-//        title.position = CGPoint(x: 0, y: 325)
-//        title.fontColor = green
-//        title.fontName = "Futura-MediumItalic"
-//        title.zPosition = 10000
-//        title.fontSize = 150
-//
-//        addChild(title)
+        title.position = CGPoint(x: 0, y: 450)
+        title.fontColor = green
+        title.fontName = "Futura-MediumItalic"
+        title.zPosition = 10000
+        title.fontSize = 80
+
+        addChild(title)
 //
 //        remove_ads.position = CGPoint(x: 0, y: -400)
 //        remove_ads.fontColor = SKColor.red
@@ -265,11 +267,19 @@ class StoreMenu: SKScene {
     }
     
     func purchase_ad_removal() {
+        let feedback = UIActivityIndicatorView()
+        feedback.color = green
+        
+        feedback.startAnimating()
+        
+        
+        
         SwiftyStoreKit.purchaseProduct("09876", quantity: 1, atomically: true) { result in
             switch result {
             case .success(let purchase):
-                print("Purchase Success: \(purchase.productId)")
+                self.give_message(message: "Purchase Success: \(purchase.productId)")
             case .error(let error):
+                self.give_message(message: "Unknown error")
                 switch error.code {
                 case .unknown: print("Unknown error. Please contact support")
                 case .clientInvalid: print("Not allowed to make the payment")
@@ -284,6 +294,29 @@ class StoreMenu: SKScene {
                 }
             }
         }
+        
+        //feedback.stopAnimating()
+    }
+    
+    func give_message(message: String) {
+        
+        let message_label = SKLabelNode(text: message)
+        message_label.fontColor = green
+        message_label.position = CGPoint(x: 0, y: -425)
+        message_label.fontName = "Futura-MediumItalic"
+        message_label.fontSize = 70
+        
+        
+        self.addChild(message_label)
+        
+        
+        let wait = SKAction.wait(forDuration: 1.0)
+        
+        let fade_out = SKAction.fadeOut(withDuration: 1.0)
+        
+        let sequence = SKAction.sequence([ wait, fade_out ])
+        
+        message_label.run(sequence)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -333,8 +366,25 @@ class StoreMenu: SKScene {
                     purchase_ad_removal()
                 }
 
-                if name == "rate" {
+                if name == "restore" {
                     //go_to_app_store()
+                    print("restore")
+                    SwiftyStoreKit.restorePurchases(atomically: true) { results in
+                        if results.restoreFailedPurchases.count > 0 {
+                            print("Restore Failed: \(results.restoreFailedPurchases)")
+                            self.give_message(message: "Restore Failed")
+                        }
+                        else if results.restoredPurchases.count > 0 {
+                            print("Restore Success: \(results.restoredPurchases)")
+                            UserDefaults.standard.set(true, forKey: "paid_version")
+                            self.view?.subviews.forEach({ $0.removeFromSuperview() })
+                        }
+                        else {
+                            //print("Nothing to Restore")
+                            self.give_message(message: "Nothing to restore")
+                            
+                        }
+                    }
                 }
 
 

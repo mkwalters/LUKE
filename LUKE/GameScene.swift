@@ -318,16 +318,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //OBSRACLES GETS ONE ELEMENT FROM CREATE_SCENEz
         
         let projected_path = SKShapeNode()
-        let fall_distance = -100
+        //let fall_distance = -100
         
         var starting_position = CGPoint(x: 400, y: -700)
         var ending_position = CGPoint(x: 300, y: 300)
         
         if obstacles.count > 0 {
             if last_obstacle_direction == "left" {
-                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.minX, y: obstacles.last!.path!.boundingBox.maxY)
+                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.minX, y: obstacles.last!.frame.maxY)
             } else {
-                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.maxX, y: obstacles.last!.path!.boundingBox.maxY)
+                starting_position = CGPoint(x: obstacles.last!.path!.boundingBox.maxX, y: obstacles.last!.frame.maxY)
             }
         }
         
@@ -335,17 +335,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
         ending_position = CGPoint(x: starting_position.x + (obstacle_length * cos(angle_in_degrees * .pi / 180)), y: starting_position.y + (obstacle_length * sin(angle_in_degrees * .pi / 180)))
         
-        if new {
-            starting_position.y += CGFloat(fall_distance)
-            ending_position.y += CGFloat(fall_distance)
-        }
-        
+//        if new {
+//            starting_position.y += CGFloat(fall_distance)
+//            ending_position.y += CGFloat(fall_distance)
+//        }
+//
         if starting {
             starting_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles) * -1 * obstacle_length)
             ending_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles + 1) * -1 * obstacle_length)
             number_of_starting_obstacles -= 1
         }
         
+        let glow_width = CGFloat(5)
+        let line_width = CGFloat(2)
         
         let line_path:CGMutablePath = CGMutablePath()
         line_path.move(to: starting_position)
@@ -353,7 +355,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projected_path.zPosition = 200
         projected_path.path = line_path
         projected_path.strokeColor = green
-        projected_path.lineWidth = 2
+        projected_path.lineWidth = line_width
         //projected_path.glowWidth = 2
         
         projected_path.name = "projected_path"
@@ -365,7 +367,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         projected_path.physicsBody?.isDynamic = true
         projected_path.physicsBody?.affectedByGravity = true
         projected_path.physicsBody?.pinned = true
-        projected_path.glowWidth = 5
+        projected_path.glowWidth = glow_width
         
         
         
@@ -507,16 +509,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func start_obstacle_spawn() {
-        let spawn = SKAction.run({
-            self.make_obstacle(starting: false, new: true)
-            
-        })
-        let wait = SKAction.wait(forDuration: 0.28)
-        
-        let sequence = SKAction.sequence([wait, spawn])
-        
-        let spawn_forever = SKAction.repeatForever(sequence)
-        score_label.run(spawn_forever)
+//        let spawn = SKAction.run({
+//            self.make_obstacle(starting: false, new: true)
+//
+//        })
+//        let wait = SKAction.wait(forDuration: 0.28)
+//
+//        let sequence = SKAction.sequence([wait, spawn])
+//
+//        let spawn_forever = SKAction.repeatForever(sequence)
+//        score_label.run(spawn_forever)
     }
     func unpause_obstacles() {
         for obstacle in obstacles {
@@ -532,7 +534,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             if game_has_started == false {
                 
-                start_obstacle_spawn()
+                //start_obstacle_spawn()
                 game_has_started = true
                 instructions_background.removeFromParent()
                 unpause_obstacles()
@@ -585,6 +587,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
 
+        if obstacles.last!.frame.maxY < 1000 {
+            print("spawning")
+            make_obstacle(starting: false, new: true)
+        }
+        
+        if obstacles.first!.frame.maxY < -1000 {
+            print("purging")
+            obstacles.first?.removeAllActions()
+            obstacles.first?.removeFromParent()
+            obstacles.removeFirst()
+            
+            
+            joints.first?.removeAllActions()
+            joints.first?.removeFromParent()
+            joints.removeFirst()
+            
+        }
         
         if block.physicsBody?.allContactedBodies().isEmpty ?? false && game_has_started == true && game_ended == false {
             
