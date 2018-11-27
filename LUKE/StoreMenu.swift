@@ -277,7 +277,8 @@ class StoreMenu: SKScene {
         SwiftyStoreKit.purchaseProduct("09876", quantity: 1, atomically: true) { result in
             switch result {
             case .success(let purchase):
-                self.give_message(message: "Purchase Success: \(purchase.productId)")
+                UserDefaults.standard.set(true, forKey: "paid_version")
+                self.give_message(message: "Purchase successful")
             case .error(let error):
                 self.give_message(message: "Unknown error")
                 switch error.code {

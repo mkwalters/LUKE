@@ -44,6 +44,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var starting_block_position = CGPoint()
     let line = SKShapeNode()
     
+    
+    
     var first_instructions = SKLabelNode()
     var second_instructions = SKLabelNode()
     
@@ -82,6 +84,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var instructions_background = SKSpriteNode()
     
+    var level_speeds = [CGFloat]()
+    
+    var level_up_scores = [Int]()
+    
+    var current_level = Int()
+    var instructions_added = false
+    
     override func didMove(to view: SKView) {
         
         create_scene()
@@ -96,17 +105,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    
-    func create_scene() {
-//        let end_joint = SKEmitterNode(fileNamed: "MyParticle")!
-//        end_joint.position = CGPoint.zero
-//        addChild(end_joint)
-        self.physicsWorld.contactDelegate = self
-        forces = []
-        for _ in 1...n_forces {
-            forces.append(0.0)
-        }
+    func level_up() {
         
+        if current_level < 9 {
+            current_level += 1
+            
+            for obstacle in obstacles {
+                obstacle.physicsBody?.velocity.dy = level_speeds[current_level]
+            }
+            
+            let level_up_label = SKLabelNode(text: "Level " + String(current_level + 1))
+            level_up_label.position = CGPoint(x: 0, y: 100)
+            level_up_label.fontColor = green
+            level_up_label.fontName = "Futura-MediumItalic"
+            level_up_label.fontSize = 100
+            
+            addChild(level_up_label)
+            
+            let fade = SKAction.fadeOut(withDuration: 1.0)
+            level_up_label.run(fade)
+            
+        }
+    }
+    
+    func add_instructions_to_screen() {
+        
+        instructions_added = true
         instructions_background = SKSpriteNode(color: UIColor(displayP3Red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 0.9), size: CGSize(width: self.frame.width - 90, height: 200))
         instructions_background.zPosition = 99999
         
@@ -156,7 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let line_path:CGMutablePath = CGMutablePath()
             line_path.move(to: line_pairs[i][0])
             line_path.addLine(to: line_pairs[i][1])
-
+            
             top_line.zPosition = 2
             top_line.path = line_path
             top_line.strokeColor = green
@@ -167,6 +191,88 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             top_line.glowWidth = 3
             
         }
+
+    }
+    
+    
+    func create_scene() {
+//        let end_joint = SKEmitterNode(fileNamed: "MyParticle")!
+//        end_joint.position = CGPoint.zero
+//        addChild(end_joint)
+        self.physicsWorld.contactDelegate = self
+        forces = []
+        for _ in 1...n_forces {
+            forces.append(0.0)
+        }
+        current_level = 0
+        level_speeds = [-325, -375, -425, -500, -600, -750, -900, -1000, -1200]
+        level_up_scores = [10,25,60,100,140,200,260,320, 400, 500 ]
+        
+        instructions_added = false
+        if get_high_score() < 30 {
+            add_instructions_to_screen()
+        }
+//
+//        instructions_background = SKSpriteNode(color: UIColor(displayP3Red: 40.0 / 255.0, green: 40.0 / 255.0, blue: 40.0 / 255.0, alpha: 0.9), size: CGSize(width: self.frame.width - 90, height: 200))
+//        instructions_background.zPosition = 99999
+//
+//        addChild(instructions_background)
+//
+//        var instruction_background_corners = [CGPoint]()
+//
+//        //top left
+//        instruction_background_corners.append(
+//            CGPoint(x: -1 * instructions_background.frame.width / 2, y: instructions_background.frame.height / 2)
+//        )
+//        //top right
+//        instruction_background_corners.append(
+//            CGPoint(x: instructions_background.frame.width / 2, y: instructions_background.frame.height / 2)
+//        )
+//        //bottom left
+//        instruction_background_corners.append(
+//            CGPoint(x: -1 * instructions_background.frame.width / 2, y: -1 * instructions_background.frame.height / 2)
+//        )
+//        //bottom right
+//        instruction_background_corners.append(
+//            CGPoint(x: instructions_background.frame.width / 2, y: -1 * instructions_background.frame.height / 2)
+//        )
+//
+//        for i in 0...3 {
+//            let effect = SKShapeNode(circleOfRadius: 9.0)
+//            effect.fillColor = green
+//
+//            instructions_background.addChild(effect)
+//            effect.position = instruction_background_corners[i]
+//            effect.addGlow()
+//        }
+//
+//        var line_pairs = [[CGPoint]]()
+//        //top
+//        line_pairs.append([instruction_background_corners[0],instruction_background_corners[1]])
+//        //bottom
+//        line_pairs.append([instruction_background_corners[2],instruction_background_corners[3]])
+//        //left
+//        line_pairs.append([instruction_background_corners[0],instruction_background_corners[2]])
+//        //right
+//        line_pairs.append([instruction_background_corners[1],instruction_background_corners[3]])
+//
+//
+//        for i in 0...3 {
+//            let top_line = SKShapeNode()
+//            let line_path:CGMutablePath = CGMutablePath()
+//            line_path.move(to: line_pairs[i][0])
+//            line_path.addLine(to: line_pairs[i][1])
+//
+//            top_line.zPosition = 2
+//            top_line.path = line_path
+//            top_line.strokeColor = green
+//            top_line.position = CGPoint.zero
+//
+//            top_line.lineWidth = 5
+//            instructions_background.addChild(top_line)
+//            top_line.glowWidth = 3
+//
+//        }
 
         let latest_high_score = UserDefaults.standard.integer(forKey: "high_score")
         
@@ -229,7 +335,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         score_label = SKLabelNode(text: String(score))
         score_label.fontName = "Futura-MediumItalic"
         score_label.fontSize = 70
-        score_label.fontColor = UIColor.white
+        score_label.fontColor = green
         score_label.horizontalAlignmentMode = .right
         score_label.position = CGPoint(x: self.frame.width / 2 - score_x_offset , y: self.frame.height / 2 - score_label.frame.height - score_y_offset)
         
@@ -238,16 +344,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         high_score_label = SKLabelNode(text: String(latest_high_score))
         high_score_label.fontName = "Futura-MediumItalic"
         high_score_label.fontSize = 70
-        high_score_label.fontColor = UIColor.white
+        high_score_label.fontColor = green
         high_score_label.horizontalAlignmentMode = .left
         high_score_label.position = CGPoint(x: -1 * self.frame.width / 2 + score_x_offset , y: self.frame.height / 2 - high_score_label.frame.height - score_y_offset)
         
         addChild(high_score_label)
         
-        let update_score = SKAction.run {
-            self.score += 1
-            self.score_label.text = String(self.score)
-        }
+//        let update_score = SKAction.run {
+//            self.score += 1
+//            self.score_label.text = String(self.score)
+//
+//            for num in self.level_up_scores {
+//                if self.score == num {
+//                    self.level_up()
+//                }
+//            }
+//        }
         
         let wait_for_score = SKAction.wait(forDuration: 0.5)
         
@@ -258,24 +370,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-        let increment_score = SKAction.sequence([update_score, update_high_score_if_necessary , wait_for_score ])
+        //let increment_score = SKAction.sequence([update_score, update_high_score_if_necessary , wait_for_score ])
         
         
         
-        let increment_score_forever = SKAction.repeatForever(increment_score)
+        //let increment_score_forever = SKAction.repeatForever(increment_score)
         
         
-        score_label.run(increment_score_forever)
+        //score_label.run(increment_score_forever)
         score_label.isPaused = true
         
         
-        let joint = SKEmitterNode(fileNamed: "MyParticle")!
-        joint.position = CGPoint.zero
-        addChild(joint)
-        joints.append(joint)
+//        let joint = SKEmitterNode(fileNamed: "MyParticle")!
+//        joint.position = CGPoint.zero
+//        addChild(joint)
+//        joints.append(joint)
         
         
-        for i in stride(from: 20, through: 0, by: -1) {
+        for _ in stride(from: 20, through: 0, by: -1) {
             make_obstacle(starting: true, new: false)
         }
         
@@ -332,7 +444,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         let angle_in_degrees = self.determine_obstacle_angle()
-
+        
         ending_position = CGPoint(x: starting_position.x + (obstacle_length * cos(angle_in_degrees * .pi / 180)), y: starting_position.y + (obstacle_length * sin(angle_in_degrees * .pi / 180)))
         
 //        if new {
@@ -341,7 +453,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 //        }
 //
         if starting {
-            starting_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles) * -1 * obstacle_length)
+            ending_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles) * -1 * obstacle_length)
             ending_position = CGPoint(x: 0, y: CGFloat(number_of_starting_obstacles + 1) * -1 * obstacle_length)
             number_of_starting_obstacles -= 1
         }
@@ -373,17 +485,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let joint = SKEmitterNode(fileNamed: "MyParticle")!
         joint.position = ending_position
-        addChild(joint)
+        projected_path.addChild(joint)
         
         joints.append(joint)
 
-        run_fall_forever(node: projected_path)
+        //run_fall_forever(node: projected_path)
+        projected_path.physicsBody?.velocity = CGVector(dx: CGFloat(0), dy: level_speeds[current_level])
         if game_has_started {
-            run_fall_forever(node: joint)
+            //run_fall_forever(node: joint)
             joint.yAcceleration = 300
         }
         if game_has_started == false {
-            projected_path.isPaused = true
+            projected_path.physicsBody?.velocity = CGVector(dx: CGFloat(0), dy: CGFloat(0))
             //end_joint.isPaused = true
         }
         addChild(projected_path)
@@ -522,7 +635,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     func unpause_obstacles() {
         for obstacle in obstacles {
-            obstacle.isPaused = false
+            obstacle.physicsBody?.velocity = CGVector(dx: CGFloat(0), dy: level_speeds[current_level])
             score_label.isPaused = false
             //print("game started")
         }
@@ -536,12 +649,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 //start_obstacle_spawn()
                 game_has_started = true
-                instructions_background.removeFromParent()
+                
+                if instructions_added {
+                    instructions_background.removeFromParent()
+                }
+                
+                
+                
                 unpause_obstacles()
                 for joint in joints {
-                    run_fall_forever(node: joint)
+                    //run_fall_forever(node: joint)
+                    
                     joint.yAcceleration = 300
                 }
+            }
+            
+            score += 1
+            self.score_label.text = String(self.score)
+            
+            for num in self.level_up_scores {
+                if self.score == num {
+                    self.level_up()
+                }
+            }
+            if self.score > get_high_score() {
+                self.high_score_label.text = String(self.score)
             }
 
         }
@@ -561,8 +693,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         restart_button.setScale(3.0)
         restart_button.zPosition = 9999999
         restart_button.name = "restart"
-        //restart_button.addGlow()
+        
         addChild(restart_button)
+        //restart_button.addGlow()
         
         let home_button = SKSpriteNode(imageNamed: "home")
         home_button.position = CGPoint(x: 0, y: -100)
@@ -574,13 +707,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func pause_obstacles() {
         for obstacle in obstacles {
-            obstacle.isPaused = true
+            obstacle.physicsBody?.velocity.dy = 0.0
         }
         score_label.isPaused = true
     }
     func pause_joints() {
         for joint in joints {
-            joint.removeAction(forKey: "fall")
+            //joint.removeAction(forKey: "fall")
+            
             joint.yAcceleration = 0
         }
     }
@@ -611,7 +745,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             update_high_score(new_score: Double(score))
             update_death_count()
             
-            if get_high_score() > 10 && get_death_count() % 5 == 0 {
+            if get_high_score() > 20 && get_death_count() % 2 == 0 && UserDefaults.standard.bool(forKey: "paid_version") == false {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showAd"), object: nil)
             }
             add_restart_and_home_button()
